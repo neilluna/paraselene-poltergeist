@@ -1,0 +1,21 @@
+## Title: Paraselene's Poltergeist
+## Author: @Paraselene-Alqwi
+## APIVersion: [API_VERSION]
+## SavedVariables: ParaselenePoltergeistSavedVariables
+
+## DependsOn: LibAddonMenu-2.0 LibMsgWin-1.0
+
+Class.lua
+
+lang/en.lua           
+lang/$(language).lua
+
+Placement.lua
+Clipboard.lua
+
+SavedVariables.lua
+Settings.lua
+Main.lua
+
+UI.xml
+Bindings.xml
