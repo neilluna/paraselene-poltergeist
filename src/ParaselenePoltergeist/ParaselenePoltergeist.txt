@@ -9,6 +9,7 @@ Class.lua
 
 lang/en.lua           
 lang/$(language).lua
+Strings.lua
 
 Placement.lua
 Clipboard.lua

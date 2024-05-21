@@ -41,13 +41,13 @@ function ParaselenePoltergeist.Placement:Save()
 end
 
 function ParaselenePoltergeist.Placement:Print(msgWindow)
-    msgWindow:AddText('ID: ' .. Id64ToString(self.furnishingId), 1, 1, 1)
-    msgWindow:AddText('x: ' .. self.x, 1, 1, 1)
-    msgWindow:AddText('y: ' .. self.y, 1, 1, 1)
-    msgWindow:AddText('z: ' .. self.z, 1, 1, 1)
-    msgWindow:AddText('pitch: ' .. self.pitch, 1, 1, 1)
-    msgWindow:AddText('roll: ' .. self.roll, 1, 1, 1)
-    msgWindow:AddText('yaw: ' .. self.yaw, 1, 1, 1)
+    msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_ID) .. Id64ToString(self.furnishingId), 0, 1, 0)
+    msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. self.x, 0, 1, 0)
+    msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. self.y, 0, 1, 0)
+    msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. self.z, 0, 1, 0)
+    msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. self.pitch, 0, 1, 0)
+    msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. self.roll, 0, 1, 0)
+    msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. self.yaw, 0, 1, 0)
 end
 
 function ParaselenePoltergeist.Placement.Capture()
@@ -55,10 +55,10 @@ function ParaselenePoltergeist.Placement.Capture()
 
     local editorMode = GetHousingEditorMode()
     if editorMode == HOUSING_EDITOR_MODE_PLACEMENT then
-        return nil, 'You must place the furniture before capturing its placement.'
+        return nil, GetString(PARASELENE_POLTERGEIST_MUST_PLACE_FURNITURE)
     end
     if not HousingEditorCanSelectTargettedFurniture() then
-        return nil, 'You must target the furniture before capturing its placement.'
+        return nil, GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE)
     end
 
     LockCameraRotation(true)
@@ -68,7 +68,7 @@ function ParaselenePoltergeist.Placement.Capture()
     LockCameraRotation(false)
 
     if not furnitureId then
-        return nil, 'Unable to capture the furniture placement.'
+        return nil, GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE)
     end
 
     local x, y, z = HousingEditorGetFurnitureWorldPosition(furnitureId)

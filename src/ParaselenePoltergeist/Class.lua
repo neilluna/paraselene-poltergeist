@@ -1,6 +1,5 @@
 ParaselenePoltergeist = {
     name = 'ParaselenePoltergeist',
-    displayName = "Paraselene's Poltergeist",
     author = '@Paraselene-Alqwi',
     version = '[FULL_VERSION]',
 

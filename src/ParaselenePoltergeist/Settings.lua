@@ -12,11 +12,11 @@ function ParaselenePoltergeist.Settings:Clone(otherInstance)
     return newInstance
 end
 
-function ParaselenePoltergeist.Settings.Load(displayName, author, version)
+function ParaselenePoltergeist.Settings.Load(author, version)
     local panelInfo = {
         type = 'panel',
-        name = displayName,
-        displayName = displayName .. ' - Settings',
+        name = GetString(PARASELENE_POLTERGEIST_TITLE),
+        displayName = GetString(PARASELENE_POLTERGEIST_SETTINGS_TITLE),
         author = author,
         version = version,
     }

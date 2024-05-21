@@ -37,7 +37,7 @@ end
 
 function ParaselenePoltergeist.Clipboard:Print(msgWindow)
     if not IsOwnerOfCurrentHouse() then
-        msgWindow:AddText('You must be in one of your own houses.', 1, 0, 0)
+        msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
         return
     end
 
@@ -45,7 +45,7 @@ function ParaselenePoltergeist.Clipboard:Print(msgWindow)
     if self.placementsByHouseId[houseId] then
         self.placementsByHouseId[houseId]:Print(msgWindow)
     else
-        msgWindow:AddText('The clipboard for this house is empty.', 1, 1, 0)
+        msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 1, 0)
     end
 
     return true, nil
@@ -53,7 +53,7 @@ end
 
 function ParaselenePoltergeist.Clipboard:Capture()
     if not IsOwnerOfCurrentHouse() then
-        return false, 'You must be in one of your own houses.'
+        return false, GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE)
     end
 
     local placement, errorMessage = ParaselenePoltergeist.Placement.Capture()
