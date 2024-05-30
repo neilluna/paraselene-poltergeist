@@ -19,7 +19,7 @@ ParaselenePoltergeist.localizationStrings = {
     UNABLE_TO_CAPTURE_FURNITURE = 'Unable to capture the furniture placement.',
 
     -- Furniture placement variables.
-    ID = 'ID: ',
+    TAG = 'Individual Item #',
     X = 'X: ',
     Y = 'Y: ',
     Z = 'Z: ',

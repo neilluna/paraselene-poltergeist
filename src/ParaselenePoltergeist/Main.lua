@@ -20,10 +20,15 @@ function ParaselenePoltergeist:OnAddOnLoaded(event, name)
     end
     EVENT_MANAGER:UnregisterForEvent(self.displayName, EVENT_ADD_ON_LOADED)
 
-    self.msgWindow = LibMsgWin:CreateMsgWindow(
+    PARASELENE_POLTERGEIST_DEBUG_LOGGER = LibDebugLogger:Create(self.name)
+    local logger = PARASELENE_POLTERGEIST_DEBUG_LOGGER
+    logger:SetEnabled(true)
+
+    PARASELENE_POLTERGEIST_MESSAGE_WINDOW = LibMsgWin:CreateMsgWindow(
         'ParaselenePoltergeistMessages',
         GetString(PARASELENE_POLTERGEIST_TITLE)
     )
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
 
     ZO_PreHook('Logout', function() self.savedVariables:Save() return false end)
     ZO_PreHook('ReloadUI', function() self.savedVariables:Save() return false end)
@@ -37,20 +42,26 @@ function ParaselenePoltergeist:OnAddOnLoaded(event, name)
     self.settings = ParaselenePoltergeist.Settings.Load(self.author, self.version)
     self.savedVariables = ParaselenePoltergeist.SavedVariables.Load()
 
-    self.msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_SAVED_IN_CLIPBOARD), 1, 1, 1)
-    self.savedVariables.serverSpecific.clipboard:Print(self.msgWindow)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_SAVED_IN_CLIPBOARD), 1, 1, 1)
+    self.savedVariables:PrintClipboard()
 
     self:UpdateClock()
 end
 
-function ParaselenePoltergeist:CapturePlacement()
-    self.msgWindow:AddText(GetString(PARASELENE_POLTERGEIST_CAPTURED_INTO_CLIPBOARD), 1, 1, 1)
-    local captureSucceeded, errorMessage = self.savedVariables.serverSpecific.clipboard:Capture()
-    if captureSucceeded then
-        self.savedVariables.serverSpecific.clipboard:Print(self.msgWindow)
-    else
-        self.msgWindow:AddText(errorMessage, 1, 0, 0)
+function ParaselenePoltergeist:Capture()
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CAPTURED_INTO_CLIPBOARD), 1, 1, 1)
+
+    local furnitureId = self.savedVariables.serverSpecific.furnishings:Capture()
+    if not furnitureId then
+        return
     end
+
+    local placement = ParaselenePoltergeist.Placement.Capture(furnitureId)
+    self.savedVariables:SetClipboard(placement)
+    self.savedVariables:PrintClipboard()
 end
 
 function ParaselenePoltergeist:UpdateClock()

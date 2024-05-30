@@ -3,7 +3,7 @@
 ## APIVersion: [API_VERSION]
 ## SavedVariables: ParaselenePoltergeistSavedVariables
 
-## DependsOn: LibAddonMenu-2.0 LibMsgWin-1.0
+## DependsOn: LibAddonMenu-2.0 LibDebugLogger LibMsgWin-1.0
 
 Class.lua
 
@@ -11,8 +11,11 @@ lang/en.lua
 lang/$(language).lua
 Strings.lua
 
+Furnishing.lua
+FurnishingStorage.lua
 Placement.lua
-Clipboard.lua
+PlacementStorage.lua
+House.lua
 
 SavedVariables.lua
 Settings.lua
