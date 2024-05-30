@@ -2,7 +2,7 @@
     <Layer name="SI_KEYBINDINGS_LAYER_HOUSING_EDITOR">
         <Category name="PARASELENE_POLTERGEIST_TITLE">
             <Action name="PARASELENE_POLTERGEIST_CAPTURE_PLACEMENT">
-                <Down>ParaselenePoltergeistInstance:CapturePlacement()</Down>
+                <Down>ParaselenePoltergeistInstance:Capture()</Down>
             </Action>
         </Category>
     </Layer>

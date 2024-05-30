@@ -11,3 +11,6 @@ ParaselenePoltergeist = {
     RAD270 = math.rad(270),
     RAD360 = math.rad(360),
 }
+
+PARASELENE_POLTERGEIST_DEBUG_LOGGER = nil
+PARASELENE_POLTERGEIST_MESSAGE_WINDOW = nil
