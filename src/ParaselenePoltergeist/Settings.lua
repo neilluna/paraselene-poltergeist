@@ -2,12 +2,12 @@ ParaselenePoltergeist.Settings = {
     name = 'ParaselenePoltergeistSettings',
 }
 
-function ParaselenePoltergeist.Settings:Clone(otherInstance)
+function ParaselenePoltergeist.Settings:Create(initData)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
 
-    newInstance.values = otherInstance.values
+    newInstance.values = initData.values
 
     return newInstance
 end
@@ -25,7 +25,7 @@ function ParaselenePoltergeist.Settings.Load(author, version)
     local values = {}
     LibAddonMenu2:RegisterOptionControls(ParaselenePoltergeist.Settings.name, values)
 
-    return ParaselenePoltergeist.Settings:Clone{
+    return ParaselenePoltergeist.Settings:Create{
         values = values,
     }
 end

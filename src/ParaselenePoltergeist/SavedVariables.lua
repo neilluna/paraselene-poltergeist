@@ -6,27 +6,34 @@ ParaselenePoltergeist.SavedVariables = {
             schemaVersion = '[SCHEMA_VERSION]',
         },
         serverSpecific = {
-            furnishings = {},
-            houses = {},
+            furnishings = {
+                storage = {},
+                nextAvailableTag = 1,
+            },
+            houses = {
+                storage = {},
+            },
             schemaVersion = '[SCHEMA_VERSION]',
         },
     },
 }
 
-function ParaselenePoltergeist.SavedVariables:Clone(otherInstance)
+function ParaselenePoltergeist.SavedVariables:Create(initData)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
 
-    newInstance.persisted = otherInstance.persisted
-    newInstance.serverIndependent = otherInstance.serverIndependent
-    newInstance.serverSpecific = otherInstance.serverSpecific
+    newInstance.persisted = initData.persisted
+    newInstance.serverIndependent = initData.serverIndependent
+    newInstance.serverSpecific = initData.serverSpecific
 
     return newInstance
 end
 
 function ParaselenePoltergeist.SavedVariables.Load()
     local persisted = {}
+
+    -- Load/migrate persisted.serverIndependent into serverIndependent.
     persisted.serverIndependent = ZO_SavedVars:NewAccountWide(
         ParaselenePoltergeist.SavedVariables.name,
         1,
@@ -34,6 +41,11 @@ function ParaselenePoltergeist.SavedVariables.Load()
         ParaselenePoltergeist.SavedVariables.defaults.serverIndependent,
         'ServerIndependent'
     )
+    local serverIndependent = {
+        schemaVersion = '[SCHEMA_VERSION]',
+    }
+
+    -- Load/migrate persisted.serverSpecific into serverSpecific.
     persisted.serverSpecific = ZO_SavedVars:NewAccountWide(
         ParaselenePoltergeist.SavedVariables.name,
         1,
@@ -41,26 +53,16 @@ function ParaselenePoltergeist.SavedVariables.Load()
         ParaselenePoltergeist.SavedVariables.defaults.serverSpecific,
         GetWorldName()
     )
-
-    -- Load/migrate persisted.serverSpecific into serverSpecific.
     local serverSpecific = {
-        furnishings = ParaselenePoltergeist.FurnishingStorage.Load(persisted.serverSpecific.furnishings),
-        houses = {},
-        schemaVersion = '[SCHEMA_VERSION]',
-    }
-    for houseId, house in pairs(persisted.serverSpecific.houses) do
-        serverSpecific.houses[houseId] = ParaselenePoltergeist.House.Load(house)
-    end
-
-    -- Load/migrate persisted.serverIndependent into serverIndependent.
-    local serverIndependent = {
+        furnishings = ParaselenePoltergeist.FurnishingStorage:Create(persisted.serverSpecific.furnishings),
+        houses = ParaselenePoltergeist.HouseStorage:Create(persisted.serverSpecific.houses),
         schemaVersion = '[SCHEMA_VERSION]',
     }
 
-    return ParaselenePoltergeist.SavedVariables:Clone{
+    return ParaselenePoltergeist.SavedVariables:Create{
         persisted = persisted,
-        serverSpecific = serverSpecific,
         serverIndependent = serverIndependent,
+        serverSpecific = serverSpecific,
     }
 end
 
@@ -71,68 +73,47 @@ function ParaselenePoltergeist.SavedVariables:Save()
     self.persisted.serverIndependent.lastSaved = lastSaved
 
     self.persisted.serverSpecific.furnishings = self.serverSpecific.furnishings:Save()
-
-    local houses = {}
-    for houseId, house in pairs(self.serverSpecific.houses) do
-        houses[houseId] = house:Save()
-    end
-    self.persisted.serverSpecific.houses = houses
-
+    self.persisted.serverSpecific.houses = self.serverSpecific.houses:Save()
     self.persisted.serverSpecific.schemaVersion = self.serverSpecific.schemaVersion
     self.persisted.serverSpecific.lastSaved = lastSaved
 end
 
 function ParaselenePoltergeist.SavedVariables:SetClipboard(placement)
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+    return self.serverSpecific.houses:SetClipboard(placement)
+end
 
-    local houseId = GetCurrentZoneHouseId()
-    if (houseId <= 0) or not IsOwnerOfCurrentHouse() then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
-        return
-    end
-
-    if not self.serverSpecific.houses[houseId] then
-        self.serverSpecific.houses[houseId] = ParaselenePoltergeist.House.Load{}
-    end
-
-    self.serverSpecific.houses[houseId]:SetClipboard(placement)
+function ParaselenePoltergeist.SavedVariables:GetClipboard()
+    local success, clipboard = self.serverSpecific.houses:GetClipboard()
+    return success, clipboard
 end
 
 function ParaselenePoltergeist.SavedVariables:ClearClipboard()
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
-    local houseId = GetCurrentZoneHouseId()
-    if (houseId <= 0) or not IsOwnerOfCurrentHouse() then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
-        return
-    end
-
-    if not self.serverSpecific.houses[houseId] then
-        self.serverSpecific.houses[houseId] = ParaselenePoltergeist.House.Load{}
-    else
-        self.serverSpecific.houses[houseId]:ClearClipboard()
-    end
+    return self.serverSpecific.houses:ClearClipboard()
 end
 
-function ParaselenePoltergeist.SavedVariables:PrintClipboard()
+
+function ParaselenePoltergeist.SavedVariables:DisplayClipboard()
     local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
 
-    local houseId = GetCurrentZoneHouseId()
-    if (houseId <= 0) or not IsOwnerOfCurrentHouse() then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
-        return
+    local houseId = ParaselenePoltergeist.HouseStorage.GetHouseId()
+    if not houseId then
+        return false
     end
 
-    if not (self.serverSpecific.houses[houseId] and self.serverSpecific.houses[houseId].clipboard) then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 1, 0)
-        return
+    local success, placement = self:GetClipboard()
+    if not success then
+        return false
     end
 
-    local furnitureId = self.serverSpecific.houses[houseId].clipboard.furnitureId
-    self.serverSpecific.furnishings.storage[furnitureId]:Print()
-    self.serverSpecific.houses[houseId].clipboard:Print()
+    if not placement then
+        ---@diagnostic disable-next-line: need-check-nil, undefined-field
+        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 0, 1, 1)
+        return true
+    end
+    
+    local furnitureId = placement.furnitureId
+    self.serverSpecific.furnishings:Display(furnitureId)
+    placement:Display()
+
+    return true
 end

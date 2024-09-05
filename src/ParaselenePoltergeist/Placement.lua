@@ -1,31 +1,19 @@
 ParaselenePoltergeist.Placement = {}
 
-function ParaselenePoltergeist.Placement:Clone(otherInstance)
+function ParaselenePoltergeist.Placement:Create(initData)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
 
-    newInstance.furnitureId = otherInstance.furnitureId
-    newInstance.x = otherInstance.x
-    newInstance.y = otherInstance.y
-    newInstance.z = otherInstance.z
-    newInstance.pitch = otherInstance.pitch
-    newInstance.roll = otherInstance.roll
-    newInstance.yaw = otherInstance.yaw
+    newInstance.furnitureId = initData.furnitureId
+    newInstance.x = initData.x
+    newInstance.y = initData.y
+    newInstance.z = initData.z
+    newInstance.pitch = initData.pitch
+    newInstance.roll = initData.roll
+    newInstance.yaw = initData.yaw
 
     return newInstance
-end
-
-function ParaselenePoltergeist.Placement.Load(savedData)
-    return ParaselenePoltergeist.Placement:Clone{
-        furnitureId = savedData.furnitureId,
-        x = savedData.x,
-        y = savedData.y,
-        z = savedData.z,
-        pitch = savedData.pitch,
-        roll = savedData.roll,
-        yaw = savedData.yaw,
-    }
 end
 
 function ParaselenePoltergeist.Placement:Save()
@@ -42,17 +30,42 @@ end
 
 function ParaselenePoltergeist.Placement.Capture(furnitureId)
     local logger = PARASELENE_POLTERGEIST_DEBUG_LOGGER
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
 
     local furnitureId64 = StringToId64(furnitureId)
+
     local x, y, z = HousingEditorGetFurnitureWorldPosition(furnitureId64)
+    if not (x and y and z) then
+        local message = 'Unable to get furniture position. ' ..
+                        'x = ' .. (x or 'nil') .. ', ' ..
+                        'y = ' .. (y or 'nil') .. ', ' ..
+                        'z = ' .. (z or 'nil')
+        ---@diagnostic disable-next-line: need-check-nil, undefined-field
+        logger:Error(message)
+        ---@diagnostic disable-next-line: need-check-nil, undefined-field
+        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        return nil
+    end
+
     local pitch, yaw, roll = HousingEditorGetFurnitureOrientation(furnitureId64)
+    if not (pitch and yaw and roll) then
+        local message = 'Unable to get furniture orientation. ' ..
+                        'pitch = ' .. (pitch or 'nil') .. ', ' ..
+                        'yaw = ' .. (yaw or 'nil') .. ', ' ..
+                        'roll = ' .. (roll or 'nil')
+        ---@diagnostic disable-next-line: need-check-nil, undefined-field
+        logger:Error(message)
+        ---@diagnostic disable-next-line: need-check-nil, undefined-field
+        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        return nil
+    end
 
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     logger:Debug('x, y, z = ' .. x .. ', ' .. y .. ', ' .. z)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     logger:Debug('pitch, yaw, roll = ' .. pitch .. ', ' .. yaw .. ', ' .. roll)
 
-    return ParaselenePoltergeist.Placement.Load{
+    return ParaselenePoltergeist.Placement:Create{
         furnitureId = furnitureId,
         x = x,
         y = y,
@@ -63,19 +76,19 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId)
     }
 end
 
-function ParaselenePoltergeist.Placement:Print()
+function ParaselenePoltergeist.Placement:Display()
     local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
 
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. self.x, 0, 1, 0)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. self.x, 0, 1, 1)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. self.y, 0, 1, 0)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. self.y, 0, 1, 1)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. self.z, 0, 1, 0)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. self.z, 0, 1, 1)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. self.pitch, 0, 1, 0)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. self.pitch, 0, 1, 1)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. self.roll, 0, 1, 0)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. self.roll, 0, 1, 1)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. self.yaw, 0, 1, 0)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. self.yaw, 0, 1, 1)
 end

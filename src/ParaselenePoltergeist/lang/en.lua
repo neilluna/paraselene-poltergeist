@@ -5,18 +5,43 @@ ParaselenePoltergeist.localizationStrings = {
     -- Key binding action label.
     CAPTURE_PLACEMENT = 'Capture Furniture Placement',
 
+    -- Slash commands.
+    SLASH_COMMAND_FULL = '/paraselenepoltergeist',
+    SLASH_COMMAND_SHORT = '/poltergeist',
+    SLASH_COMMAND_ABBREVIATION = '/ppg',
+    SLASH_COMMAND_SHOW = 'show',
+    SLASH_COMMAND_HIDE = 'hide',
+    SLASH_COMMAND_DISPLAY = 'display',
+    SLASH_COMMAND_CLEAR = 'clear',
+    SLASH_COMMAND_SAVE = 'save',
+    SLASH_COMMAND_LOAD = 'load',
+    SLASH_COMMAND_LIST = 'list',
+    SLASH_COMMAND_DELETE = 'delete',
+    
+    -- Command acknowledgements.
+    ACK_CAPTURE_PLACEMENT = 'Capture furniture placement',
+    ACK_DISPLAY_CLIPBOARD = 'Display clipboard',
+    ACK_CLEAR_CLIPBOARD = 'Clear clipboard',
+    ACK_SAVE_PLACEMENT = 'Save furniture placement',
+    ACK_LOAD_PLACEMENT = 'Load furniture placement',
+    ACK_LIST_PLACEMENTS = 'List furniture placements',
+    ACK_DELETE_PLACEMENT = 'Delete furniture placement',
+
     -- Response headers.
-    SAVED_IN_CLIPBOARD = 'Saved in clipboard:',
-    CAPTURED_INTO_CLIPBOARD = 'Captured into clipboard:',
+    RES_PLACEMENT_CAPTURED = 'Furniture placement captured',
+    RES_CLIPBOARD_DISPLAYED = 'Clipboard displayed',
+    RES_CLIPBOARD_CLEARED = 'Clipboard cleared',
+    RES_PLACEMENT_SAVED = 'Furniture placement saved',
+    RES_PLACEMENT_LOADED = 'Furniture placement loaded',
+    RES_PLACEMENTS_LISTED = 'List of Furniture placements',
+    RES_PLACEMENT_DELETED = 'Furniture placement deleted',
 
-    -- Clipboard errors.
-    CLIPBOARD_IS_EMPTY = 'The clipboard for this house is empty.',
+    -- Errors.
     MUST_BE_IN_OWN_HOUSE = 'You must be in one of your own houses.',
-
-    -- Capture errors.
     MUST_PLACE_FURNITURE = 'You must place the furniture before capturing its placement.',
     MUST_TARGET_FURNITURE = 'You must target the furniture before capturing its placement.',
     UNABLE_TO_CAPTURE_FURNITURE = 'Unable to capture the furniture placement.',
+    CLIPBOARD_IS_EMPTY = 'The clipboard for this house is empty.',
 
     -- Furniture placement variables.
     TAG = 'Individual Item #',

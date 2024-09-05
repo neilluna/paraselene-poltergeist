@@ -1,23 +1,15 @@
 ParaselenePoltergeist.Furnishing = {}
 
-function ParaselenePoltergeist.Furnishing:Clone(otherInstance)
+function ParaselenePoltergeist.Furnishing:Create(initData)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
 
-    newInstance.tag = otherInstance.tag
-    newInstance.itemId = otherInstance.itemId
-    newInstance.link = otherInstance.link
+    newInstance.tag = initData.tag
+    newInstance.itemId = initData.itemId
+    newInstance.link = initData.link
 
     return newInstance
-end
-
-function ParaselenePoltergeist.Furnishing.Load(savedData)
-    return ParaselenePoltergeist.Furnishing:Clone{
-        tag = savedData.tag,
-        itemId = savedData.itemId,
-        link = savedData.link,
-    }
 end
 
 function ParaselenePoltergeist.Furnishing:Save()
@@ -29,8 +21,8 @@ function ParaselenePoltergeist.Furnishing:Save()
 end
 
 function ParaselenePoltergeist.Furnishing.Capture(tag)
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
     local logger = PARASELENE_POLTERGEIST_DEBUG_LOGGER
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
 
     local furnitureId64 = nil
 
@@ -96,38 +88,21 @@ function ParaselenePoltergeist.Furnishing.Capture(tag)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     logger:Debug('link = ' .. (link or 'nil'))
 
-    return furnitureId, ParaselenePoltergeist.Furnishing.Load{
+    return furnitureId, ParaselenePoltergeist.Furnishing:Create{
         tag = tag,
         itemId = itemId,
         link = link,
     }
 end
 
-function ParaselenePoltergeist.Furnishing:Print()
+function ParaselenePoltergeist.Furnishing:Display()
     local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
 
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(self.link, 0, 1, 0)
+    messageWindow:AddText(self.link, 0, 1, 1)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_TAG) .. self.tag, 0, 1, 0)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_TAG) .. self.tag, 0, 1, 1)
 end
-
--- Stuff from Decotrack.
-
--- function ParaselenePoltergeist.Furnishing.GetItemId(furnitureId64)
---     local itemId = ParaselenePoltergeist.Furnishing.GetFurnitureItemId(furnitureId64)
-
---     if nil ~= itemId then
---         if not ParaselenePoltergeist.Furnishing.IsItemIdCollectible(itemId) then
---             return itemId
---         end
---     end
--- end
-
--- function ParaselenePoltergeist.Furnishing.GetFurnitureItemId(furnitureId64)
---     local link = ParaselenePoltergeist.Furnishing.GetFurnitureLink(furnitureId64)
---     return ParaselenePoltergeist.Furnishing.GetFurnitureLinkItemId(link), link
--- end
 
 function ParaselenePoltergeist.Furnishing.GetLink(furnitureId64)
     local link, collectibleLink = GetPlacedFurnitureLink(furnitureId64, LINK_STYLE_BRACKETS)
@@ -158,13 +133,3 @@ function ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
 
     return nil
 end
-
--- function ParaselenePoltergeist.Furnishing.IsItemIdCollectible(itemId)
---     local collectibleId = tonumber(itemId)
---     if collectibleId then
---         local cName = GetCollectibleName(collectibleId)
---         local cLink = GetCollectibleLink(collectibleId)
---         return cName ~= '', cName, cLink
---     end
---     return false, '', ''
--- end

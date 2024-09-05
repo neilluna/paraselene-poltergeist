@@ -16,6 +16,7 @@ FurnishingStorage.lua
 Placement.lua
 PlacementStorage.lua
 House.lua
+HouseStorage.lua
 
 SavedVariables.lua
 Settings.lua

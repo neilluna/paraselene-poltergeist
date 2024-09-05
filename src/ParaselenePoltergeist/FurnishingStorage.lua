@@ -1,36 +1,18 @@
 ParaselenePoltergeist.FurnishingStorage = {}
 
-function ParaselenePoltergeist.FurnishingStorage:Clone(otherInstance)
+function ParaselenePoltergeist.FurnishingStorage:Create(initData)
     local newInstance = {}
     setmetatable(newInstance, self)
     self.__index = self
 
     newInstance.storage = {}
-    for furnitureId, furnishing in pairs(otherInstance.storage) do
-        newInstance.storage[furnitureId] = ParaselenePoltergeist.Furnishing:Clone(furnishing)
+    for furnitureId, furnishing in pairs(initData.storage) do
+        newInstance.storage[furnitureId] = ParaselenePoltergeist.Furnishing:Create(furnishing)
     end
-    newInstance.nextAvailableTag = otherInstance.nextAvailableTag
+
+    newInstance.nextAvailableTag = initData.nextAvailableTag
 
     return newInstance
-end
-
-function ParaselenePoltergeist.FurnishingStorage.Load(savedData)
-    local storage = {}
-    if savedData.storage then
-        for furnitureId, furnishing in pairs(savedData.storage) do
-            storage[furnitureId] = ParaselenePoltergeist.Furnishing.Load(furnishing)
-        end
-    end
-
-    local nextAvailableTag = savedData.nextAvailableTag
-    if not nextAvailableTag then
-        nextAvailableTag = 1
-    end
-
-    return ParaselenePoltergeist.FurnishingStorage:Clone{
-        storage = storage,
-        nextAvailableTag = nextAvailableTag,
-    }
 end
 
 function ParaselenePoltergeist.FurnishingStorage:Save()
@@ -57,4 +39,10 @@ function ParaselenePoltergeist.FurnishingStorage:Capture()
     end
 
     return furnitureId
+end
+
+function ParaselenePoltergeist.FurnishingStorage:Display(furnitureId)
+    if self.storage[furnitureId] then
+        self.storage[furnitureId]:Display()
+    end 
 end
