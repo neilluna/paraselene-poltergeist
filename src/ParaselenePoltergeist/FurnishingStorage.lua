@@ -27,8 +27,8 @@ function ParaselenePoltergeist.FurnishingStorage:Save()
     }
 end
 
-function ParaselenePoltergeist.FurnishingStorage:Capture()
-    local furnitureId, furnishing = ParaselenePoltergeist.Furnishing.Capture(self.nextAvailableTag)
+function ParaselenePoltergeist.FurnishingStorage:Capture(editorMode)
+    local furnitureId, furnishing = ParaselenePoltergeist.Furnishing.Capture(editorMode, self.nextAvailableTag)
     if not furnitureId then
         return nil
     end
@@ -41,8 +41,10 @@ function ParaselenePoltergeist.FurnishingStorage:Capture()
     return furnitureId
 end
 
-function ParaselenePoltergeist.FurnishingStorage:Display(furnitureId)
-    if self.storage[furnitureId] then
-        self.storage[furnitureId]:Display()
-    end 
+function ParaselenePoltergeist.FurnishingStorage:GetFurniture(furnitureId)
+    if not self.storage[furnitureId] then
+        return nil
+    end
+
+    return self.storage[furnitureId]
 end

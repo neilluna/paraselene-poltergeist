@@ -6,7 +6,7 @@ function ParaselenePoltergeist.House:Create(initData)
     self.__index = self
 
     if initData.clipboard then
-        newInstance.clipboard = ParaselenePoltergeist.Placement:Create(initData.clipboard)
+        newInstance.clipboard = ParaselenePoltergeist.Clipboard:Create(initData.clipboard)
     end
 
     newInstance.placements = ParaselenePoltergeist.PlacementStorage:Create(initData.placements)
@@ -32,14 +32,33 @@ function ParaselenePoltergeist.House:Save()
     return house
 end
 
-function ParaselenePoltergeist.House:SetClipboard(placement)
-    self.clipboard = placement
+function ParaselenePoltergeist.House.GetHouseId()
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+
+    local houseId = GetCurrentZoneHouseId()
+    if (not houseId) or (houseId <= 0) or (not IsOwnerOfCurrentHouse()) then
+        ---@diagnostic disable-next-line: need-check-nil, undefined-field
+        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
+        return nil
+    end
+
+    return houseId
+end
+
+function ParaselenePoltergeist.House:Capture(furnitureId)
+    local placement, tag = self.placements:Capture(furnitureId)
+    if not placement then
+        return false
+    end
+
+    self.clipboard = ParaselenePoltergeist.Clipboard:Create{
+        placement = placement,
+        tag = tag,
+    }
+
+    return true
 end
 
 function ParaselenePoltergeist.House:GetClipboard()
     return self.clipboard
-end
-
-function ParaselenePoltergeist.House:ClearClipboard()
-    self.clipboard = nil
 end

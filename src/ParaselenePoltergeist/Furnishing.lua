@@ -20,30 +20,30 @@ function ParaselenePoltergeist.Furnishing:Save()
     }
 end
 
-function ParaselenePoltergeist.Furnishing.Capture(tag)
-    local logger = PARASELENE_POLTERGEIST_DEBUG_LOGGER
+function ParaselenePoltergeist.Furnishing.GetEditorMode()
     local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
-    local furnitureId64 = nil
-
-    if (GetCurrentZoneHouseId() <= 0) or not IsOwnerOfCurrentHouse() then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
-        return nil, nil
-    end
 
     local editorMode = GetHousingEditorMode()
     if editorMode == HOUSING_EDITOR_MODE_PLACEMENT then
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
         messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_PLACE_FURNITURE), 1, 0, 0)
-        return nil, nil
+        return nil
     end
 
     if not HousingEditorCanSelectTargettedFurniture() then
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
         messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE), 1, 0, 0)
-        return nil, nil
+        return nil
     end
+
+    return editorMode
+end
+
+function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
+    local logger = PARASELENE_POLTERGEIST_DEBUG_LOGGER
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+
+    local furnitureId64 = nil
 
     LockCameraRotation(true)
     HousingEditorSelectTargettedFurniture()
@@ -53,7 +53,7 @@ function ParaselenePoltergeist.Furnishing.Capture(tag)
 
     if not furnitureId64 then
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        logger:Error('Unable to get furniture ID.')
+        logger:Error('Unable to get the furniture ID.')
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
         messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
         return nil, nil
@@ -62,7 +62,7 @@ function ParaselenePoltergeist.Furnishing.Capture(tag)
     local link = ParaselenePoltergeist.Furnishing.GetLink(furnitureId64)
     if not link then
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        logger:Error('Unable to get furniture link.')
+        logger:Error('Unable to get the furniture link.')
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
         messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
         return nil, nil
@@ -71,7 +71,7 @@ function ParaselenePoltergeist.Furnishing.Capture(tag)
     local itemId = ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
     if not itemId then
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        logger:Error('Unable to extract item ID from the furniture link. link = ' .. (link or 'nil'))
+        logger:Error('Unable to extract the item ID from the furniture link. link = ' .. (link or 'nil'))
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
         messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
         return nil, nil
@@ -93,15 +93,6 @@ function ParaselenePoltergeist.Furnishing.Capture(tag)
         itemId = itemId,
         link = link,
     }
-end
-
-function ParaselenePoltergeist.Furnishing:Display()
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(self.link, 0, 1, 1)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_TAG) .. self.tag, 0, 1, 1)
 end
 
 function ParaselenePoltergeist.Furnishing.GetLink(furnitureId64)

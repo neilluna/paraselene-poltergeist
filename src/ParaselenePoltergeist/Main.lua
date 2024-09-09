@@ -60,19 +60,13 @@ function ParaselenePoltergeist:Capture()
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_CAPTURE_PLACEMENT), 1, 1, 1)
 
-    local furnitureId = self.savedVariables.serverSpecific.furnishings:Capture()
-    if not furnitureId then
-        return
-    end
-
-    local placement = ParaselenePoltergeist.Placement.Capture(furnitureId)
-    if not placement then
-        return
-    end
-
-    if self.savedVariables:SetClipboard(placement) then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_CAPTURED), 0, 1, 0)
+    local houseId = ParaselenePoltergeist.House.GetHouseId()
+    if houseId then
+        local editorMode = ParaselenePoltergeist.Furnishing.GetEditorMode()
+        if editorMode and self.savedVariables:Capture(houseId, editorMode) then
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_CAPTURED), 0, 1, 0)
+        end
     end
 
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
@@ -105,13 +99,33 @@ function ParaselenePoltergeist:SlashCommands(args)
         return
     end
 
+    if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_DISPLAY) then
+        self:DisplayCommand()
+        return
+    end
+
     if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_CLEAR) then
         self:ClearCommand()
         return
     end
 
-    if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_DISPLAY) then
-        self:DisplayCommand()
+    if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LOAD) then
+        self:LoadCommand()
+        return
+    end
+
+    if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SAVE) then
+        self:SaveCommand()
+        return
+    end
+
+    if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LIST) then
+        self:ListCommand()
+        return
+    end
+
+    if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_DELETE) then
+        self:DeleteCommand()
         return
     end
 end
@@ -128,29 +142,99 @@ function ParaselenePoltergeist:HideCommand()
     messageWindow:SetHidden(true)
 end
 
-function ParaselenePoltergeist:ClearCommand()
+function ParaselenePoltergeist:DisplayCommand()
     local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_CLEAR_CLIPBOARD), 1, 1, 1)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_DISPLAY_CLIPBOARD), 1, 1, 1)
 
-    if self.savedVariables:ClearClipboard() then
+    local houseId = ParaselenePoltergeist.House.GetHouseId()
+    if houseId then
+        local clipboard = self.savedVariables:GetClipboard(houseId)
+        if clipboard then
+            local furniture = self.savedVariables:GetFurniture(clipboard.placement.furnitureId)
+
+            local taggedPlacementLabel = clipboard.tag .. ' - ' .. clipboard.placement.label
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedPlacementLabel, 0, 1, 1)
+
+            local taggedFurnitureLink = furniture.tag .. ' - ' .. furniture.link
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_FURNITURE_TAG) .. taggedFurnitureLink, 0, 1, 1)
+
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. clipboard.placement.x, 0, 1, 1)
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. clipboard.placement.y, 0, 1, 1)
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. clipboard.placement.z, 0, 1, 1)
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. clipboard.placement.pitch, 0, 1, 1)
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. clipboard.placement.roll, 0, 1, 1)
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. clipboard.placement.yaw, 0, 1, 1)
+        else
+            ---@diagnostic disable-next-line: need-check-nil, undefined-field
+            messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 0, 1, 1)
+        end
         ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_CLEARED), 0, 1, 0)
+        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_DISPLAYED), 0, 1, 0)
     end
 
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     messageWindow:AddText('.', 0, 0, 0)
 end
 
-function ParaselenePoltergeist:DisplayCommand()
+function ParaselenePoltergeist:ClearCommand()
     local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_DISPLAY_CLIPBOARD), 1, 1, 1)
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_CLEAR_CLIPBOARD), 1, 1, 1)
 
-    if self.savedVariables:DisplayClipboard() then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_DISPLAYED), 0, 1, 0)
-    end
+    -- Do cool stuff here.
+
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText('.', 0, 0, 0)
+end
+
+function ParaselenePoltergeist:LoadCommand()
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LOAD_PLACEMENT), 1, 1, 1)
+
+    -- Do cool stuff here.
+
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText('.', 0, 0, 0)
+end
+
+function ParaselenePoltergeist:SaveCommand()
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_SAVE_PLACEMENT), 1, 1, 1)
+
+    -- Do cool stuff here.
+
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText('.', 0, 0, 0)
+end
+
+function ParaselenePoltergeist:ListCommand()
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LIST_PLACEMENTS), 1, 1, 1)
+
+    -- Do cool stuff here.
+
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText('.', 0, 0, 0)
+end
+
+function ParaselenePoltergeist:DeleteCommand()
+    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_PLACEMENT), 1, 1, 1)
+
+    -- Do cool stuff here.
 
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     messageWindow:AddText('.', 0, 0, 0)

@@ -13,8 +13,8 @@ ParaselenePoltergeist.localizationStrings = {
     SLASH_COMMAND_HIDE = 'hide',
     SLASH_COMMAND_DISPLAY = 'display',
     SLASH_COMMAND_CLEAR = 'clear',
-    SLASH_COMMAND_SAVE = 'save',
     SLASH_COMMAND_LOAD = 'load',
+    SLASH_COMMAND_SAVE = 'save',
     SLASH_COMMAND_LIST = 'list',
     SLASH_COMMAND_DELETE = 'delete',
     
@@ -22,8 +22,8 @@ ParaselenePoltergeist.localizationStrings = {
     ACK_CAPTURE_PLACEMENT = 'Capture furniture placement',
     ACK_DISPLAY_CLIPBOARD = 'Display clipboard',
     ACK_CLEAR_CLIPBOARD = 'Clear clipboard',
-    ACK_SAVE_PLACEMENT = 'Save furniture placement',
     ACK_LOAD_PLACEMENT = 'Load furniture placement',
+    ACK_SAVE_PLACEMENT = 'Save furniture placement',
     ACK_LIST_PLACEMENTS = 'List furniture placements',
     ACK_DELETE_PLACEMENT = 'Delete furniture placement',
 
@@ -31,9 +31,9 @@ ParaselenePoltergeist.localizationStrings = {
     RES_PLACEMENT_CAPTURED = 'Furniture placement captured',
     RES_CLIPBOARD_DISPLAYED = 'Clipboard displayed',
     RES_CLIPBOARD_CLEARED = 'Clipboard cleared',
-    RES_PLACEMENT_SAVED = 'Furniture placement saved',
     RES_PLACEMENT_LOADED = 'Furniture placement loaded',
-    RES_PLACEMENTS_LISTED = 'List of Furniture placements',
+    RES_PLACEMENT_SAVED = 'Furniture placement saved',
+    RES_PLACEMENTS_LISTED = 'Furniture placements listed',
     RES_PLACEMENT_DELETED = 'Furniture placement deleted',
 
     -- Errors.
@@ -43,8 +43,11 @@ ParaselenePoltergeist.localizationStrings = {
     UNABLE_TO_CAPTURE_FURNITURE = 'Unable to capture the furniture placement.',
     CLIPBOARD_IS_EMPTY = 'The clipboard for this house is empty.',
 
+    -- Tag phrases.
+    FURNITURE_TAG = 'Furniture #',
+    PLACEMENT_TAG = 'Placement #',
+
     -- Furniture placement variables.
-    TAG = 'Individual Item #',
     X = 'X: ',
     Y = 'Y: ',
     Z = 'Z: ',

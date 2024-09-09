@@ -15,6 +15,7 @@ Furnishing.lua
 FurnishingStorage.lua
 Placement.lua
 PlacementStorage.lua
+Clipboard.lua
 House.lua
 HouseStorage.lua
 

@@ -78,42 +78,19 @@ function ParaselenePoltergeist.SavedVariables:Save()
     self.persisted.serverSpecific.lastSaved = lastSaved
 end
 
-function ParaselenePoltergeist.SavedVariables:SetClipboard(placement)
-    return self.serverSpecific.houses:SetClipboard(placement)
-end
-
-function ParaselenePoltergeist.SavedVariables:GetClipboard()
-    local success, clipboard = self.serverSpecific.houses:GetClipboard()
-    return success, clipboard
-end
-
-function ParaselenePoltergeist.SavedVariables:ClearClipboard()
-    return self.serverSpecific.houses:ClearClipboard()
-end
-
-
-function ParaselenePoltergeist.SavedVariables:DisplayClipboard()
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
-    local houseId = ParaselenePoltergeist.HouseStorage.GetHouseId()
-    if not houseId then
+function ParaselenePoltergeist.SavedVariables:Capture(houseId, editorMode)
+    local furnitureId = self.serverSpecific.furnishings:Capture(editorMode)
+    if not furnitureId then
         return false
     end
 
-    local success, placement = self:GetClipboard()
-    if not success then
-        return false
-    end
+    return self.serverSpecific.houses:Capture(houseId, furnitureId)
+end
 
-    if not placement then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 0, 1, 1)
-        return true
-    end
-    
-    local furnitureId = placement.furnitureId
-    self.serverSpecific.furnishings:Display(furnitureId)
-    placement:Display()
+function ParaselenePoltergeist.SavedVariables:GetClipboard(houseId)
+    return self.serverSpecific.houses:GetClipboard(houseId)
+end
 
-    return true
+function ParaselenePoltergeist.SavedVariables:GetFurniture(furnitureId)
+    return self.serverSpecific.furnishings:GetFurniture(furnitureId)
 end

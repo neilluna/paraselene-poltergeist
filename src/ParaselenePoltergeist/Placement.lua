@@ -5,6 +5,7 @@ function ParaselenePoltergeist.Placement:Create(initData)
     setmetatable(newInstance, self)
     self.__index = self
 
+    newInstance.label = initData.label
     newInstance.furnitureId = initData.furnitureId
     newInstance.x = initData.x
     newInstance.y = initData.y
@@ -18,6 +19,7 @@ end
 
 function ParaselenePoltergeist.Placement:Save()
     return {
+        label = self.label,
         furnitureId = self.furnitureId,
         x = self.x,
         y = self.y,
@@ -28,7 +30,7 @@ function ParaselenePoltergeist.Placement:Save()
     }
 end
 
-function ParaselenePoltergeist.Placement.Capture(furnitureId)
+function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
     local logger = PARASELENE_POLTERGEIST_DEBUG_LOGGER
     local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
 
@@ -36,7 +38,7 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId)
 
     local x, y, z = HousingEditorGetFurnitureWorldPosition(furnitureId64)
     if not (x and y and z) then
-        local message = 'Unable to get furniture position. ' ..
+        local message = 'Unable to get the furniture position. ' ..
                         'x = ' .. (x or 'nil') .. ', ' ..
                         'y = ' .. (y or 'nil') .. ', ' ..
                         'z = ' .. (z or 'nil')
@@ -49,7 +51,7 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId)
 
     local pitch, yaw, roll = HousingEditorGetFurnitureOrientation(furnitureId64)
     if not (pitch and yaw and roll) then
-        local message = 'Unable to get furniture orientation. ' ..
+        local message = 'Unable to get the furniture orientation. ' ..
                         'pitch = ' .. (pitch or 'nil') .. ', ' ..
                         'yaw = ' .. (yaw or 'nil') .. ', ' ..
                         'roll = ' .. (roll or 'nil')
@@ -60,12 +62,17 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId)
         return nil
     end
 
+    local label = GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. tag
+
+    ---@diagnostic disable-next-line: need-check-nil, undefined-field
+    logger:Debug('label = ' .. label)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     logger:Debug('x, y, z = ' .. x .. ', ' .. y .. ', ' .. z)
     ---@diagnostic disable-next-line: need-check-nil, undefined-field
     logger:Debug('pitch, yaw, roll = ' .. pitch .. ', ' .. yaw .. ', ' .. roll)
 
     return ParaselenePoltergeist.Placement:Create{
+        label = label,
         furnitureId = furnitureId,
         x = x,
         y = y,
@@ -74,21 +81,4 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId)
         roll = roll % ParaselenePoltergeist.RAD360,
         yaw = yaw % ParaselenePoltergeist.RAD360,
     }
-end
-
-function ParaselenePoltergeist.Placement:Display()
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. self.x, 0, 1, 1)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. self.y, 0, 1, 1)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. self.z, 0, 1, 1)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. self.pitch, 0, 1, 1)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. self.roll, 0, 1, 1)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. self.yaw, 0, 1, 1)
 end
