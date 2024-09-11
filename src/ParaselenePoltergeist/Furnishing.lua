@@ -21,18 +21,14 @@ function ParaselenePoltergeist.Furnishing:Save()
 end
 
 function ParaselenePoltergeist.Furnishing.GetEditorMode()
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
     local editorMode = GetHousingEditorMode()
     if editorMode == HOUSING_EDITOR_MODE_PLACEMENT then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_PLACE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_PLACE_FURNITURE), 1, 0, 0)
         return nil
     end
 
     if not HousingEditorCanSelectTargettedFurniture() then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE), 1, 0, 0)
         return nil
     end
 
@@ -40,9 +36,6 @@ function ParaselenePoltergeist.Furnishing.GetEditorMode()
 end
 
 function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
-    local logger = PARASELENE_POLTERGEIST_DEBUG_LOGGER
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
     local furnitureId64 = nil
 
     LockCameraRotation(true)
@@ -52,41 +45,42 @@ function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
     LockCameraRotation(false)
 
     if not furnitureId64 then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        logger:Error('Unable to get the furniture ID.')
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist.logger:Error('Unable to get the furniture ID.')
+        ParaselenePoltergeist.messageWindow:AddText(
+            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
+            1, 0, 0
+        )
         return nil, nil
     end
 
     local link = ParaselenePoltergeist.Furnishing.GetLink(furnitureId64)
     if not link then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        logger:Error('Unable to get the furniture link.')
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist.logger:Error('Unable to get the furniture link.')
+        ParaselenePoltergeist.messageWindow:AddText(
+            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
+            1, 0, 0
+        )
         return nil, nil
     end
 
     local itemId = ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
     if not itemId then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        logger:Error('Unable to extract the item ID from the furniture link. link = ' .. (link or 'nil'))
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist.logger:Error(
+            'Unable to extract the item ID from the furniture link. link = ' .. (link or 'nil')
+        )
+        ParaselenePoltergeist.messageWindow:AddText(
+            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
+            1, 0, 0
+        )
         return nil, nil
     end
 
     local furnitureId = Id64ToString(furnitureId64)
 
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    logger:Debug('furnitureId = ' .. furnitureId)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    logger:Debug('tag = ' .. tag)
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    logger:Debug('itemId = ' .. (itemId or 'nil'))
-    ---@diagnostic disable-next-line: need-check-nil, undefined-field
-    logger:Debug('link = ' .. (link or 'nil'))
+    ParaselenePoltergeist.logger:Debug('furnitureId = ' .. furnitureId)
+    ParaselenePoltergeist.logger:Debug('tag = ' .. tag)
+    ParaselenePoltergeist.logger:Debug('itemId = ' .. (itemId or 'nil'))
+    ParaselenePoltergeist.logger:Debug('link = ' .. (link or 'nil'))
 
     return furnitureId, ParaselenePoltergeist.Furnishing:Create{
         tag = tag,

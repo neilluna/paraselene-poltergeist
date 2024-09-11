@@ -33,12 +33,9 @@ function ParaselenePoltergeist.House:Save()
 end
 
 function ParaselenePoltergeist.House.GetHouseId()
-    local messageWindow = PARASELENE_POLTERGEIST_MESSAGE_WINDOW
-
     local houseId = GetCurrentZoneHouseId()
     if (not houseId) or (houseId <= 0) or (not IsOwnerOfCurrentHouse()) then
-        ---@diagnostic disable-next-line: need-check-nil, undefined-field
-        messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
         return nil
     end
 
