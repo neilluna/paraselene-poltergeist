@@ -1,16 +1,11 @@
-ParaselenePoltergeist.HouseStorage = {}
+ParaselenePoltergeist.HouseStorage = {
+    storage = {},
+}
 
-function ParaselenePoltergeist.HouseStorage:Create(initData)
-    local newInstance = {}
-    setmetatable(newInstance, self)
-    self.__index = self
-
-    newInstance.storage = {}
+function ParaselenePoltergeist.HouseStorage:Load(initData)
     for houseId, house in pairs(initData.storage) do
-        newInstance.storage[houseId] = ParaselenePoltergeist.House:Create(house)
+        self.storage[houseId] = ParaselenePoltergeist.House:Create(house)
     end
-
-    return newInstance
 end
 
 function ParaselenePoltergeist.HouseStorage:Save()

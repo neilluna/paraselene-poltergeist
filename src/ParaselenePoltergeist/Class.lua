@@ -7,11 +7,7 @@ ParaselenePoltergeist = {
 
     logger = nil,  -- LibDebugLogger:Create()
     messageWindow = nil,  -- LibMsgWin:CreateMsgWindow()
-
     lsc = nil,  -- LibSlashCommander
-
-    savedVariables = nil,
-    settings = nil,
 
     RAD45 = math.rad(45),
     RAD90 = math.rad(90),

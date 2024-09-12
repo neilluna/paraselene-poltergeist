@@ -22,9 +22,9 @@ function ParaselenePoltergeist:OnAddOnLoaded(event, name)
     )
     self.messageWindow:SetHidden(true)
 
-    ZO_PreHook('Logout', function() self.savedVariables:Save() return false end)
-    ZO_PreHook('ReloadUI', function() self.savedVariables:Save() return false end)
-    ZO_PreHook('Quit', function() self.savedVariables:Save() return false end)
+    ZO_PreHook('Logout', function() ParaselenePoltergeist.SavedVariables:Save() return false end)
+    ZO_PreHook('ReloadUI', function() ParaselenePoltergeist.SavedVariables:Save() return false end)
+    ZO_PreHook('Quit', function() ParaselenePoltergeist.SavedVariables:Save() return false end)
 
     ZO_CreateStringId(
         'SI_BINDING_NAME_PARASELENE_POLTERGEIST_CAPTURE_PLACEMENT',
@@ -39,8 +39,8 @@ function ParaselenePoltergeist:OnAddOnLoaded(event, name)
 	SLASH_COMMANDS[slash_command_short] = function(args) self:SlashCommands(args) end
 	SLASH_COMMANDS[slash_command_abbreviation] = function(args) self:SlashCommands(args) end
 
-    self.savedVariables = ParaselenePoltergeist.SavedVariables.Load()
-    self.settings = ParaselenePoltergeist.Settings.Load(self.author, self.version)
+    self.SavedVariables:Load()
+    self.Settings:Load()
 
     self:UpdateClock()
 end
@@ -51,7 +51,7 @@ function ParaselenePoltergeist:Capture()
     local houseId = ParaselenePoltergeist.House.GetHouseId()
     if houseId then
         local editorMode = ParaselenePoltergeist.Furnishing.GetEditorMode()
-        if editorMode and self.savedVariables:Capture(houseId, editorMode) then
+        if editorMode and ParaselenePoltergeist.SavedVariables:Capture(houseId, editorMode) then
             self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_CAPTURED), 0, 1, 0)
         end
     end
@@ -125,9 +125,9 @@ function ParaselenePoltergeist:DisplayCommand()
 
     local houseId = ParaselenePoltergeist.House.GetHouseId()
     if houseId then
-        local clipboard = self.savedVariables:GetClipboard(houseId)
+        local clipboard = ParaselenePoltergeist.SavedVariables:GetClipboard(houseId)
         if clipboard then
-            local furniture = self.savedVariables:GetFurniture(clipboard.placement.furnitureId)
+            local furniture = ParaselenePoltergeist.SavedVariables:GetFurniture(clipboard.placement.furnitureId)
 
             local taggedPlacementLabel = clipboard.tag .. ' - ' .. clipboard.placement.label
             self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedPlacementLabel, 0, 1, 1)

@@ -1,18 +1,14 @@
-ParaselenePoltergeist.FurnishingStorage = {}
+ParaselenePoltergeist.FurnishingStorage = {
+    storage = {},
+    nextAvailableTag = 1,
+}
 
-function ParaselenePoltergeist.FurnishingStorage:Create(initData)
-    local newInstance = {}
-    setmetatable(newInstance, self)
-    self.__index = self
-
-    newInstance.storage = {}
+function ParaselenePoltergeist.FurnishingStorage:Load(initData)
     for furnitureId, furnishing in pairs(initData.storage) do
-        newInstance.storage[furnitureId] = ParaselenePoltergeist.Furnishing:Create(furnishing)
+        self.storage[furnitureId] = ParaselenePoltergeist.Furnishing:Create(furnishing)
     end
 
-    newInstance.nextAvailableTag = initData.nextAvailableTag
-
-    return newInstance
+    self.nextAvailableTag = initData.nextAvailableTag
 end
 
 function ParaselenePoltergeist.FurnishingStorage:Save()
