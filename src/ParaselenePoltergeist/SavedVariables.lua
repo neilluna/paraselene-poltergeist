@@ -54,20 +54,3 @@ function ParaselenePoltergeist.SavedVariables:Save()
     self.serverSpecific.houses = ParaselenePoltergeist.HouseStorage:Save()
     self.serverSpecific.lastSaved = lastSaved
 end
-
-function ParaselenePoltergeist.SavedVariables:Capture(houseId, editorMode)
-    local furnitureId = ParaselenePoltergeist.FurnishingStorage:Capture(editorMode)
-    if not furnitureId then
-        return false
-    end
-
-    return ParaselenePoltergeist.HouseStorage:Capture(houseId, furnitureId)
-end
-
-function ParaselenePoltergeist.SavedVariables:GetClipboard(houseId)
-    return ParaselenePoltergeist.HouseStorage:GetClipboard(houseId)
-end
-
-function ParaselenePoltergeist.SavedVariables:GetFurniture(furnitureId)
-    return ParaselenePoltergeist.FurnishingStorage:GetFurniture(furnitureId)
-end

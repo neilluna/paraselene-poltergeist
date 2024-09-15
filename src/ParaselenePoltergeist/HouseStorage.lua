@@ -34,3 +34,20 @@ function ParaselenePoltergeist.HouseStorage:GetClipboard(houseId)
 
     return self.storage[houseId]:GetClipboard()
 end
+
+function ParaselenePoltergeist.HouseStorage:ClearClipboard(houseId)
+    if self.storage[houseId] then
+        self.storage[houseId]:ClearClipboard()
+    end
+end
+
+function ParaselenePoltergeist.HouseStorage:LoadPlacement(houseId, tag)
+    if not self.storage[houseId] then
+        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
+        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    return self.storage[houseId]:LoadPlacement(tag)
+end

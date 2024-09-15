@@ -36,12 +36,17 @@ ParaselenePoltergeist.localizationStrings = {
     RES_PLACEMENTS_LISTED = 'Furniture placements listed',
     RES_PLACEMENT_DELETED = 'Furniture placement deleted',
 
+    -- Status.
+    CLIPBOARD_IS_EMPTY = 'The clipboard for this house is empty.',
+
     -- Errors.
+    INVALID_TAG = 'The specified tag is invalid.',
+    INVALID_LABEL = 'The specified label is invalid.',
     MUST_BE_IN_OWN_HOUSE = 'You must be in one of your own houses.',
     MUST_PLACE_FURNITURE = 'You must place the furniture before capturing its placement.',
     MUST_TARGET_FURNITURE = 'You must target the furniture before capturing its placement.',
     UNABLE_TO_CAPTURE_FURNITURE = 'Unable to capture the furniture placement.',
-    CLIPBOARD_IS_EMPTY = 'The clipboard for this house is empty.',
+    PLACEMENT_DOES_NOT_EXIST = 'Placement #<tag> does not exist in this house.',
 
     -- Tag phrases.
     FURNITURE_TAG = 'Furniture #',

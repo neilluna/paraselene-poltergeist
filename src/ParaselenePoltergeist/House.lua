@@ -59,3 +59,24 @@ end
 function ParaselenePoltergeist.House:GetClipboard()
     return self.clipboard
 end
+
+function ParaselenePoltergeist.House:ClearClipboard()
+    self.clipboard = nil
+end
+
+function ParaselenePoltergeist.House:LoadPlacement(tag)
+    local placement = self.placements:GetPlacement(tag)
+    if not placement then
+        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
+        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    self.clipboard = ParaselenePoltergeist.Clipboard:Create{
+        placement = placement,
+        tag = tag,
+    }
+
+    return true
+end
