@@ -27,8 +27,13 @@ function ParaselenePoltergeist.HouseStorage:Capture(houseId, furnitureId)
     return self.storage[houseId]:Capture(furnitureId)
 end
 
+function ParaselenePoltergeist.HouseStorage:IsClipboardEmpty(houseId)
+    return (not self.storage[houseId]) or self.storage[houseId]:IsClipboardEmpty()
+end
+
 function ParaselenePoltergeist.HouseStorage:GetClipboard(houseId)
     if not self.storage[houseId] then
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
         return nil
     end
 
@@ -36,9 +41,12 @@ function ParaselenePoltergeist.HouseStorage:GetClipboard(houseId)
 end
 
 function ParaselenePoltergeist.HouseStorage:ClearClipboard(houseId)
-    if self.storage[houseId] then
-        self.storage[houseId]:ClearClipboard()
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
+        return false
     end
+
+    return self.storage[houseId]:ClearClipboard()
 end
 
 function ParaselenePoltergeist.HouseStorage:LoadPlacement(houseId, tag)
@@ -50,4 +58,24 @@ function ParaselenePoltergeist.HouseStorage:LoadPlacement(houseId, tag)
     end
 
     return self.storage[houseId]:LoadPlacement(tag)
+end
+
+function ParaselenePoltergeist.HouseStorage:SavePlacement(houseId, label)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
+        return false
+    end
+
+    return self.storage[houseId]:SavePlacement(label)
+end
+
+function ParaselenePoltergeist.HouseStorage:DeletePlacement(houseId, tag)
+    if not self.storage[houseId] then
+        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
+        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    return self.storage[houseId]:DeletePlacement(tag)
 end

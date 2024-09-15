@@ -39,5 +39,36 @@ function ParaselenePoltergeist.PlacementStorage:Capture(furnitureId)
 end
 
 function ParaselenePoltergeist.PlacementStorage:GetPlacement(tag)
+    if not self.storage[tag] then
+        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
+        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return nil
+    end
+
     return self.storage[tag]
+end
+
+function ParaselenePoltergeist.PlacementStorage:SavePlacement(tag, placement)
+    self.storage[tag] = placement
+
+    -- The tag of a captured placement is equal to the next available tag.
+    -- The tag of a previously saved placement is not equal to the next available tag.
+    -- If you are saving a captured placement, then advance the next available tag.
+    if tag == self.nextAvailableTag then
+        self.nextAvailableTag = self.nextAvailableTag + 1
+    end
+end
+
+function ParaselenePoltergeist.PlacementStorage:DeletePlacement(tag)
+    if not self.storage[tag] then
+        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
+        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    self.storage[tag] = nil
+
+    return true
 end
