@@ -54,9 +54,26 @@ function ParaselenePoltergeist.PlacementStorage:SavePlacement(tag, placement)
 
     -- The tag of a captured placement is equal to the next available tag.
     -- The tag of a previously saved placement is not equal to the next available tag.
-    -- If you are saving a captured placement, then advance the next available tag.
+    -- If a captured placement is being saved, then advance the next available tag.
     if tag == self.nextAvailableTag then
         self.nextAvailableTag = self.nextAvailableTag + 1
+    end
+end
+
+function ParaselenePoltergeist.PlacementStorage:PlacementCount()
+    return #self.storage
+end
+
+function ParaselenePoltergeist.PlacementStorage:IteratePlacements(placementFunction)
+    ParaselenePoltergeist.logger:Debug('PlacementStorage - placementFunction = ' .. type(placementFunction))
+    local tags = {}
+    for tag, _ in pairs(self.storage) do
+        table.insert(tags, tag)
+    end
+    table.sort(tags)
+
+    for _, tag in pairs(tags) do
+        placementFunction(tag, self.storage[tag])
     end
 end
 

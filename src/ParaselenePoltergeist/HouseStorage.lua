@@ -69,6 +69,21 @@ function ParaselenePoltergeist.HouseStorage:SavePlacement(houseId, label)
     return self.storage[houseId]:SavePlacement(label)
 end
 
+function ParaselenePoltergeist.HouseStorage:PlacementCount(houseId)
+    return (self.storage[houseId] and self.storage[houseId]:PlacementCount()) or 0
+end
+
+function ParaselenePoltergeist.HouseStorage:IteratePlacements(houseId, placementFunction)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_NO_PLACEMENTS), 1, 0, 0)
+        return false
+    end
+
+    self.storage[houseId]:IteratePlacements(placementFunction)
+
+    return true
+end
+
 function ParaselenePoltergeist.HouseStorage:DeletePlacement(houseId, tag)
     if not self.storage[houseId] then
         local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)

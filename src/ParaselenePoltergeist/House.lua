@@ -109,6 +109,14 @@ function ParaselenePoltergeist.House:SavePlacement(label)
     return true
 end
 
+function ParaselenePoltergeist.House:PlacementCount()
+    return self.placements:PlacementCount()
+end
+
+function ParaselenePoltergeist.House:IteratePlacements(placementFunction)
+    self.placements:IteratePlacements(placementFunction)
+end
+
 function ParaselenePoltergeist.House:DeletePlacement(tag)
     return self.placements:DeletePlacement(tag)
 end

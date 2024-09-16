@@ -137,24 +137,23 @@ function ParaselenePoltergeist:DisplayCommand()
 
     if self.HouseStorage:IsClipboardEmpty(houseId) then
         self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 0, 1, 1)
-        return self:CommandComplete(true)
+    else
+        local clipboard = self.HouseStorage:GetClipboard(houseId)
+        local furniture = self.FurnishingStorage:GetFurniture(clipboard.placement.furnitureId)
+
+        local taggedPlacementLabel = clipboard.tag .. ' - ' .. clipboard.placement.label
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedPlacementLabel, 0, 1, 1)
+
+        local taggedFurnitureLink = furniture.tag .. ' - ' .. furniture.link
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_FURNITURE_TAG) .. taggedFurnitureLink, 0, 1, 1)
+
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. clipboard.placement.x, 0, 1, 1)
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. clipboard.placement.y, 0, 1, 1)
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. clipboard.placement.z, 0, 1, 1)
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. clipboard.placement.pitch, 0, 1, 1)
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. clipboard.placement.roll, 0, 1, 1)
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. clipboard.placement.yaw, 0, 1, 1)
     end
-
-    local clipboard = self.HouseStorage:GetClipboard(houseId)
-    local furniture = self.FurnishingStorage:GetFurniture(clipboard.placement.furnitureId)
-
-    local taggedPlacementLabel = clipboard.tag .. ' - ' .. clipboard.placement.label
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedPlacementLabel, 0, 1, 1)
-
-    local taggedFurnitureLink = furniture.tag .. ' - ' .. furniture.link
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_FURNITURE_TAG) .. taggedFurnitureLink, 0, 1, 1)
-
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. clipboard.placement.x, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. clipboard.placement.y, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. clipboard.placement.z, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. clipboard.placement.pitch, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. clipboard.placement.roll, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. clipboard.placement.yaw, 0, 1, 1)
 
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_DISPLAYED), 0, 1, 0)
 
@@ -227,7 +226,22 @@ end
 function ParaselenePoltergeist:ListCommand()
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LIST_PLACEMENTS), 1, 1, 1)
 
-    -- Do cool stuff here.
+    local houseId = self.House.GetHouseId()
+    if not houseId then
+        return self:CommandComplete(false)
+    end
+
+    if self.HouseStorage:PlacementCount(houseId) == 0 then
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_NO_PLACEMENTS), 0, 1, 1)
+    else
+        self.HouseStorage:IteratePlacements(
+            houseId,
+            function(tag, placement)
+                self.messageWindow:AddText(tag .. ' - ' .. placement.label, 0, 1, 1)
+            end
+        )
+    end
+
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENTS_LISTED), 0, 1, 0)
 
     return self:CommandComplete(true)

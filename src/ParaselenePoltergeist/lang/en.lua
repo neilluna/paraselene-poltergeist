@@ -47,6 +47,7 @@ ParaselenePoltergeist.localizationStrings = {
     MUST_TARGET_FURNITURE = 'You must target the furniture before capturing its placement.',
     UNABLE_TO_CAPTURE_FURNITURE = 'Unable to capture the furniture placement.',
     PLACEMENT_DOES_NOT_EXIST = 'Placement #<tag> does not exist in this house.',
+    NO_PLACEMENTS = 'There are no placements in this house.',
 
     -- Tag phrases.
     FURNITURE_TAG = 'Furniture #',
