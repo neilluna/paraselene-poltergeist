@@ -5,21 +5,57 @@ ParaselenePoltergeist.localizationStrings = {
     -- Key binding action label.
     CAPTURE_PLACEMENT = 'Capture Furniture Placement',
 
+    -- Slash commands.
+    SLASH_COMMAND_FULL = '/paraselenepoltergeist',
+    SLASH_COMMAND_SHORT = '/poltergeist',
+    SLASH_COMMAND_ABBR = '/ppg',
+
+    -- Slash subcommands.
+    SLASH_COMMAND_SHOW_WINDOW = 'show-window',
+    SLASH_COMMAND_HIDE_WINDOW = 'hide-window',
+    SLASH_COMMAND_SHOW_CLIPBOARD = 'show-clipboard',
+    SLASH_COMMAND_CLEAR_CLIPBOARD = 'clear-clipboard',
+    SLASH_COMMAND_LOAD_PLACEMENT = 'load-placement',
+    SLASH_COMMAND_SAVE_PLACEMENT = 'save-placement',
+    SLASH_COMMAND_LIST_PLACEMENTS = 'list-placements',
+    SLASH_COMMAND_DELETE_PLACEMENT = 'delete-placement',
+    
+    -- Command acknowledgements.
+    ACK_CAPTURE_PLACEMENT = 'Capture furniture placement',
+    ACK_SHOW_CLIPBOARD = 'Show clipboard',
+    ACK_CLEAR_CLIPBOARD = 'Clear clipboard',
+    ACK_LOAD_PLACEMENT = 'Load furniture placement',
+    ACK_SAVE_PLACEMENT = 'Save furniture placement',
+    ACK_LIST_PLACEMENTS = 'List furniture placements',
+    ACK_DELETE_PLACEMENT = 'Delete furniture placement',
+
     -- Response headers.
-    SAVED_IN_CLIPBOARD = 'Saved in clipboard:',
-    CAPTURED_INTO_CLIPBOARD = 'Captured into clipboard:',
+    RES_PLACEMENT_CAPTURED = 'Furniture placement captured',
+    RES_CLIPBOARD_SHOWN = 'Clipboard shown',
+    RES_CLIPBOARD_CLEARED = 'Clipboard cleared',
+    RES_PLACEMENT_LOADED = 'Furniture placement loaded',
+    RES_PLACEMENT_SAVED = 'Furniture placement saved',
+    RES_PLACEMENTS_LISTED = 'Furniture placements listed',
+    RES_PLACEMENT_DELETED = 'Furniture placement deleted',
 
-    -- Clipboard errors.
+    -- Status.
     CLIPBOARD_IS_EMPTY = 'The clipboard for this house is empty.',
-    MUST_BE_IN_OWN_HOUSE = 'You must be in one of your own houses.',
 
-    -- Capture errors.
-    MUST_PLACE_FURNITURE = 'You must place the furniture before capturing its placement.',
+    -- Errors.
+    INVALID_TAG = 'The specified tag is invalid.',
+    INVALID_LABEL = 'The specified label is invalid.',
+    MUST_BE_IN_OWN_HOUSE = 'You must be in one of your own houses.',
+    MUST_BE_IN_SELECTION_MODE = 'You must be in selection mode to capture the furniture placement.',
     MUST_TARGET_FURNITURE = 'You must target the furniture before capturing its placement.',
     UNABLE_TO_CAPTURE_FURNITURE = 'Unable to capture the furniture placement.',
+    PLACEMENT_DOES_NOT_EXIST = 'Placement #%d does not exist in this house.',
+    NO_PLACEMENTS = 'There are no placements in this house.',
+
+    -- Tag phrases.
+    FURNITURE_TAG = 'Furniture #',
+    PLACEMENT_TAG = 'Placement #',
 
     -- Furniture placement variables.
-    TAG = 'Individual Item #',
     X = 'X: ',
     Y = 'Y: ',
     Z = 'Z: ',

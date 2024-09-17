@@ -1,7 +1,13 @@
 ParaselenePoltergeist = {
-    name = 'ParaselenePoltergeist',
+    name = 'ParaselenePoltergeist',  -- Must be same as class name.
     author = '@Paraselene-Alqwi',
     version = '[FULL_VERSION]',
+
+    displayName = nil,
+
+    logger = nil,  -- LibDebugLogger:Create()
+    messageWindow = nil,  -- LibMsgWin:CreateMsgWindow()
+    lsc = nil,  -- LibSlashCommander
 
     RAD45 = math.rad(45),
     RAD90 = math.rad(90),
@@ -11,6 +17,3 @@ ParaselenePoltergeist = {
     RAD270 = math.rad(270),
     RAD360 = math.rad(360),
 }
-
-PARASELENE_POLTERGEIST_DEBUG_LOGGER = nil
-PARASELENE_POLTERGEIST_MESSAGE_WINDOW = nil
