@@ -40,8 +40,8 @@ end
 
 function ParaselenePoltergeist.PlacementStorage:GetPlacement(tag)
     if not self.storage[tag] then
-        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
-        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.logger:Info('Placement %d does not exist in the placement storage.', tag)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST), tag)
         ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
         return nil
     end
@@ -49,23 +49,25 @@ function ParaselenePoltergeist.PlacementStorage:GetPlacement(tag)
     return self.storage[tag]
 end
 
-function ParaselenePoltergeist.PlacementStorage:SavePlacement(tag, placement)
-    self.storage[tag] = placement
-
+function ParaselenePoltergeist.PlacementStorage:SetPlacement(tag, placement)
     -- The tag of a captured placement is equal to the next available tag.
     -- The tag of a previously saved placement is not equal to the next available tag.
     -- If a captured placement is being saved, then advance the next available tag.
     if tag == self.nextAvailableTag then
+        ParaselenePoltergeist.logger:Info('Creating placement [%d] in the placement storage.', tag)
         self.nextAvailableTag = self.nextAvailableTag + 1
+    else
+        ParaselenePoltergeist.logger:Info('Saving placement [%d] in the placement storage.', tag)
     end
+
+    self.storage[tag] = placement
 end
 
-function ParaselenePoltergeist.PlacementStorage:PlacementCount()
+function ParaselenePoltergeist.PlacementStorage:GetPlacementCount()
     return #self.storage
 end
 
 function ParaselenePoltergeist.PlacementStorage:IteratePlacements(placementFunction)
-    ParaselenePoltergeist.logger:Debug('PlacementStorage - placementFunction = ' .. type(placementFunction))
     local tags = {}
     for tag, _ in pairs(self.storage) do
         table.insert(tags, tag)
@@ -79,8 +81,8 @@ end
 
 function ParaselenePoltergeist.PlacementStorage:DeletePlacement(tag)
     if not self.storage[tag] then
-        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
-        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.logger:Info('Placement %d does not exist in the placement storage.', tag)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST), tag)
         ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
         return false
     end

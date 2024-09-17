@@ -21,6 +21,7 @@ end
 
 function ParaselenePoltergeist.HouseStorage:Capture(houseId, furnitureId)
     if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('Creating house %d in the house storage.', houseId)
         self.storage[houseId] = ParaselenePoltergeist.House.Init()
     end
 
@@ -28,11 +29,18 @@ function ParaselenePoltergeist.HouseStorage:Capture(houseId, furnitureId)
 end
 
 function ParaselenePoltergeist.HouseStorage:IsClipboardEmpty(houseId)
-    return (not self.storage[houseId]) or self.storage[houseId]:IsClipboardEmpty()
+
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        return true
+    end
+
+    return self.storage[houseId]:IsClipboardEmpty()
 end
 
 function ParaselenePoltergeist.HouseStorage:GetClipboard(houseId)
     if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
         ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
         return nil
     end
@@ -42,6 +50,7 @@ end
 
 function ParaselenePoltergeist.HouseStorage:ClearClipboard(houseId)
     if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
         ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
         return false
     end
@@ -51,8 +60,8 @@ end
 
 function ParaselenePoltergeist.HouseStorage:LoadPlacement(houseId, tag)
     if not self.storage[houseId] then
-        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
-        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST), tag)
         ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
         return false
     end
@@ -62,6 +71,7 @@ end
 
 function ParaselenePoltergeist.HouseStorage:SavePlacement(houseId, label)
     if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
         ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
         return false
     end
@@ -69,12 +79,18 @@ function ParaselenePoltergeist.HouseStorage:SavePlacement(houseId, label)
     return self.storage[houseId]:SavePlacement(label)
 end
 
-function ParaselenePoltergeist.HouseStorage:PlacementCount(houseId)
-    return (self.storage[houseId] and self.storage[houseId]:PlacementCount()) or 0
+function ParaselenePoltergeist.HouseStorage:GetPlacementCount(houseId)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        return 0
+    end
+
+    return self.storage[houseId]:GetPlacementCount()
 end
 
 function ParaselenePoltergeist.HouseStorage:IteratePlacements(houseId, placementFunction)
     if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
         ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_NO_PLACEMENTS), 1, 0, 0)
         return false
     end
@@ -86,8 +102,8 @@ end
 
 function ParaselenePoltergeist.HouseStorage:DeletePlacement(houseId, tag)
     if not self.storage[houseId] then
-        local template = GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST)
-        local message = template:gsub('<tag>', tag)
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST), tag)
         ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
         return false
     end

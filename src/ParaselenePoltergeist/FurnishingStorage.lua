@@ -30,6 +30,7 @@ function ParaselenePoltergeist.FurnishingStorage:Capture(editorMode)
     end
 
     if not self.storage[furnitureId] then
+        ParaselenePoltergeist.logger:Info('Creating furniture %s in the furniture storage.', furnitureId)
         self.storage[furnitureId] = furnishing
         self.nextAvailableTag = self.nextAvailableTag + 1
     end
@@ -39,6 +40,7 @@ end
 
 function ParaselenePoltergeist.FurnishingStorage:GetFurniture(furnitureId)
     if not self.storage[furnitureId] then
+        ParaselenePoltergeist.logger:Info('Furniture %s does not exist in the furniture storage.', furnitureId)
         return nil
     end
 

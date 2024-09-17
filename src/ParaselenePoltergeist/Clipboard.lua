@@ -17,3 +17,11 @@ function ParaselenePoltergeist.Clipboard:Save()
         tag = self.tag,
     }
 end
+
+function ParaselenePoltergeist.Clipboard:GetPlacement()
+    return self.placement
+end
+
+function ParaselenePoltergeist.Clipboard:GetTag()
+    return self.tag
+end

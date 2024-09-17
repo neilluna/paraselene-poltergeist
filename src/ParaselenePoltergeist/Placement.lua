@@ -31,35 +31,34 @@ function ParaselenePoltergeist.Placement:Save()
 end
 
 function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
+    local label = GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. tag
+    ParaselenePoltergeist.logger:Info('label = ['  .. label .. '].')
+
     local furnitureId64 = StringToId64(furnitureId)
 
     local x, y, z = HousingEditorGetFurnitureWorldPosition(furnitureId64)
     if not (x and y and z) then
         local message = 'Unable to get the furniture position. ' ..
-                        'x = ' .. (x or 'nil') .. ', ' ..
-                        'y = ' .. (y or 'nil') .. ', ' ..
-                        'z = ' .. (z or 'nil')
-        ParaselenePoltergeist.logger:Error(message)
+                        'x = [' .. (x or 'nil') .. '], ' ..
+                        'y = [' .. (y or 'nil') .. '], ' ..
+                        'z = [' .. (z or 'nil') .. '].'
+        ParaselenePoltergeist.logger:Warn(message)
         ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
         return nil
     end
+    ParaselenePoltergeist.logger:Info('x, y, z = [' .. x .. '], [' .. y .. '], [' .. z .. '].')
 
     local pitch, yaw, roll = HousingEditorGetFurnitureOrientation(furnitureId64)
     if not (pitch and yaw and roll) then
         local message = 'Unable to get the furniture orientation. ' ..
-                        'pitch = ' .. (pitch or 'nil') .. ', ' ..
-                        'yaw = ' .. (yaw or 'nil') .. ', ' ..
-                        'roll = ' .. (roll or 'nil')
-        ParaselenePoltergeist.logger:Error(message)
+                        'pitch = [' .. (pitch or 'nil') .. '], ' ..
+                        'yaw = [' .. (yaw or 'nil') .. '], ' ..
+                        'roll = [' .. (roll or 'nil') .. '].'
+        ParaselenePoltergeist.logger:Warn(message)
         ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
         return nil
     end
-
-    local label = GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. tag
-
-    ParaselenePoltergeist.logger:Debug('label = ' .. label)
-    ParaselenePoltergeist.logger:Debug('x, y, z = ' .. x .. ', ' .. y .. ', ' .. z)
-    ParaselenePoltergeist.logger:Debug('pitch, yaw, roll = ' .. pitch .. ', ' .. yaw .. ', ' .. roll)
+    ParaselenePoltergeist.logger:Info('pitch, yaw, roll = [' .. pitch .. '], [' .. yaw .. '], [' .. roll .. '].')
 
     return ParaselenePoltergeist.Placement:Create{
         label = label,
@@ -71,4 +70,20 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
         roll = roll % ParaselenePoltergeist.RAD360,
         yaw = yaw % ParaselenePoltergeist.RAD360,
     }
+end
+
+function ParaselenePoltergeist.Placement:GetLabel()
+    return self.label
+end
+
+function ParaselenePoltergeist.Placement:GetFurnitureId()
+    return self.furnitureId
+end
+
+function ParaselenePoltergeist.Placement:GetPosition()
+    return self.x, self.y, self.z
+end
+
+function ParaselenePoltergeist.Placement:GetOrientation()
+    return self.pitch, self.yaw, self.roll
 end
