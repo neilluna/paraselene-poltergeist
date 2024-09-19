@@ -13,6 +13,7 @@ ParaselenePoltergeist.localizationStrings = {
     -- Slash subcommands.
     SLASH_COMMAND_SHOW_WINDOW = 'show-window',
     SLASH_COMMAND_HIDE_WINDOW = 'hide-window',
+    SLASH_COMMAND_TOGGLE_WINDOW = 'toggle-window',
     SLASH_COMMAND_SHOW_CLIPBOARD = 'show-clipboard',
     SLASH_COMMAND_CLEAR_CLIPBOARD = 'clear-clipboard',
     SLASH_COMMAND_LOAD_PLACEMENT = 'load-placement',
@@ -20,6 +21,18 @@ ParaselenePoltergeist.localizationStrings = {
     SLASH_COMMAND_LIST_PLACEMENTS = 'list-placements',
     SLASH_COMMAND_DELETE_PLACEMENT = 'delete-placement',
     
+    -- Slash command help.
+    SLASH_COMMAND_LSC_HELP = "Paraselene's Poltergeist",
+    SLASH_COMMAND_SHOW_WINDOW_LSC_HELP = 'Show the message window',
+    SLASH_COMMAND_HIDE_WINDOW_LSC_HELP = 'Hide the message window',
+    SLASH_COMMAND_TOGGLE_WINDOW_LSC_HELP = 'Toggle the message window',
+    SLASH_COMMAND_SHOW_CLIPBOARD_LSC_HELP = 'Show the clipboard',
+    SLASH_COMMAND_CLEAR_CLIPBOARD_LSC_HELP = 'Clear the clipboard',
+    SLASH_COMMAND_LOAD_PLACEMENT_LSC_HELP = 'Load a placement',
+    SLASH_COMMAND_SAVE_PLACEMENT_LSC_HELP = 'Save a placement',
+    SLASH_COMMAND_LIST_PLACEMENTS_LSC_HELP = 'List all placements',
+    SLASH_COMMAND_DELETE_PLACEMENT_LSC_HELP = 'Delete a placement',
+
     -- Command acknowledgements.
     ACK_CAPTURE_PLACEMENT = 'Capture furniture placement',
     ACK_SHOW_CLIPBOARD = 'Show clipboard',
