@@ -31,15 +31,70 @@ function ParaselenePoltergeist:OnAddOnLoaded(event, name)
         'SI_BINDING_NAME_PARASELENE_POLTERGEIST_CAPTURE_PLACEMENT',
         GetString(PARASELENE_POLTERGEIST_CAPTURE_PLACEMENT)
     )
-
-    SLASH_COMMANDS[GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_FULL)] = function(args) self:SlashCommands(args) end
-    SLASH_COMMANDS[GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHORT)] = function(args) self:SlashCommands(args) end
-	SLASH_COMMANDS[GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_ABBR)] = function(args) self:SlashCommands(args) end
+    self:CreateSlashCommands()
 
     self.SavedVariables:Load()
     self.Settings:Load()
 
     self:UpdateClock()
+end
+
+function ParaselenePoltergeist:CreateSlashCommands()
+    self.lsc = LibSlashCommander
+    local command = self.lsc:Register(
+        {
+            GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_FULL),
+            GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHORT),
+            GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_ABBR),
+        },
+        function(args) self:ToggleWindow() end,
+        GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LSC_HELP)
+    )
+
+    local subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHOW_WINDOW))
+    subCommand:SetCallback(function() self:ShowWindow() end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHOW_WINDOW_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_HIDE_WINDOW))
+    subCommand:SetCallback(function() self:HideWindow() end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_HIDE_WINDOW_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_TOGGLE_WINDOW))
+    subCommand:SetCallback(function() self:ToggleWindow() end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_TOGGLE_WINDOW_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHOW_CLIPBOARD))
+    subCommand:SetCallback(function() self:ShowClipboard() end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHOW_CLIPBOARD_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_CLEAR_CLIPBOARD))
+    subCommand:SetCallback(function() self:ClearClipboard() end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_CLEAR_CLIPBOARD_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LOAD_PLACEMENT))
+    subCommand:SetCallback(function(args) self:LoadPlacement(args) end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LOAD_PLACEMENT_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SAVE_PLACEMENT))
+    subCommand:SetCallback(function(args) self:SavePlacement(args) end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SAVE_PLACEMENT_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LIST_PLACEMENTS))
+    subCommand:SetCallback(function() self:ListPlacements() end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LIST_PLACEMENTS_LSC_HELP))
+
+    subCommand = command:RegisterSubCommand()
+    subCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_DELETE_PLACEMENT))
+    subCommand:SetCallback(function(args) self:DeletePlacement(args) end)
+    subCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_DELETE_PLACEMENT_LSC_HELP))
 end
 
 function ParaselenePoltergeist:Capture()
@@ -70,49 +125,37 @@ function ParaselenePoltergeist:Capture()
     return self:CommandComplete(true)
 end
 
-function ParaselenePoltergeist:SlashCommands(args)
-    local command, commandArgs = string.match(args, "^%s*(%S+)%s*(.*)$")
-    self.logger:Info('command = [' .. (command or 'nil') .. ']')
-    self.logger:Info('commandArgs = [' .. (commandArgs or 'nil') .. ']')
-
-    if not command then
-        return
-    end
-
-    command = string.lower(command)
-
-    if command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHOW_WINDOW) then
-        self:ShowWindow()
-    elseif command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_HIDE_WINDOW) then
-        self:HideWindow()
-    elseif command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SHOW_CLIPBOARD) then
-        self:ShowClipboard()
-    elseif command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_CLEAR_CLIPBOARD) then
-        self:ClearClipboard()
-    elseif command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LOAD_PLACEMENT) then
-        self:LoadPlacement(commandArgs)
-    elseif command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_SAVE_PLACEMENT) then
-        self:SavePlacement(commandArgs)
-    elseif command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_LIST_PLACEMENTS) then
-        self:ListPlacements()
-    elseif command == GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_DELETE_PLACEMENT) then
-        self:DeletePlacement(commandArgs)
-    else
-        self.logger:Warn('Unknown command.')
-    end
-end
-
 function ParaselenePoltergeist:ShowWindow()
     self.logger:Info('ShowWindow() called.')
+
     self.messageWindow:SetHidden(false)
+
     self.logger:Info('Command completed.')
+
     return true
 end
 
 function ParaselenePoltergeist:HideWindow()
     self.logger:Info('HideWindow() called.')
+
     self.messageWindow:SetHidden(true)
+
     self.logger:Info('Command completed.')
+
+    return true
+end
+
+function ParaselenePoltergeist:ToggleWindow()
+    self.logger:Info('ToggleWindow() called.')
+
+    if self.messageWindow:IsHidden() then
+        self.messageWindow:SetHidden(false)
+    else
+        self.messageWindow:SetHidden(true)
+    end
+
+    self.logger:Info('Command completed.')
+
     return true
 end
 
