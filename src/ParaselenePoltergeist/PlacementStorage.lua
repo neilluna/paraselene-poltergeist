@@ -50,9 +50,9 @@ function ParaselenePoltergeist.PlacementStorage:GetPlacement(tag)
 end
 
 function ParaselenePoltergeist.PlacementStorage:SetPlacement(tag, placement)
-    -- The tag of a captured placement is equal to the next available tag.
+    -- The tag of a newly captured placement is equal to the next available tag.
     -- The tag of a previously saved placement is not equal to the next available tag.
-    -- If a captured placement is being saved, then advance the next available tag.
+    -- If a newly captured placement is being saved, then advance the next available tag.
     if tag == self.nextAvailableTag then
         ParaselenePoltergeist.logger:Info('Creating placement [%d] in the placement storage.', tag)
         self.nextAvailableTag = self.nextAvailableTag + 1

@@ -72,6 +72,10 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
     }
 end
 
+function ParaselenePoltergeist.Placement:SetLabel(label)
+    self.label = label
+end
+
 function ParaselenePoltergeist.Placement:GetLabel()
     return self.label
 end

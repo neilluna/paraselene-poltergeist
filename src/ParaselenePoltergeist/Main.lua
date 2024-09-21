@@ -172,7 +172,7 @@ function ParaselenePoltergeist:ShowClipboard()
         self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 0, 1, 1)
     else
         local clipboard = self.HouseStorage:GetClipboard(houseId)
-        local placement = clipboard:GetPlacement()
+        local placement = clipboard:GetContent()
 
         local taggedPlacementLabel = clipboard:GetTag() .. ' - ' .. placement:GetLabel()
         self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedPlacementLabel, 0, 1, 1)
@@ -213,6 +213,102 @@ function ParaselenePoltergeist:ClearClipboard()
     end
 
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_CLEARED), 0, 1, 0)
+
+    return self:CommandComplete(true)
+end
+
+function ParaselenePoltergeist:LoadAction(tag)
+    self.logger:Info('LoadAction() called.')
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LOAD_ACTION), 1, 1, 1)
+
+    tag = self:CanonizeTag(tag)
+    if not tag then
+        return self:CommandComplete(false)
+    end
+
+    local houseId = self.House.GetHouseId()
+    if not houseId then
+        return self:CommandComplete(false)
+    end
+
+    if not self.HouseStorage:LoadAction(houseId, tag) then
+        return self:CommandComplete(false)
+    end
+
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTION_LOADED), 0, 1, 0)
+
+    return self:CommandComplete(true)
+end
+
+function ParaselenePoltergeist:SaveAction(label)
+    self.logger:Info('SaveAction() called.')
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_SAVE_ACTION), 1, 1, 1)
+
+    if label ~= nil then
+        label = self:CanonizeLabel(label)
+        if not label then
+            return self:CommandComplete(false)
+        end
+    end
+
+    local houseId = self.House.GetHouseId()
+    if not houseId then
+        return self:CommandComplete(false)
+    end
+
+    if not self.HouseStorage:SaveAction(houseId, label) then
+        return self:CommandComplete(false)
+    end
+
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTION_SAVED), 0, 1, 0)
+
+    return self:CommandComplete(true)
+end
+
+function ParaselenePoltergeist:ListActions()
+    self.logger:Info('ListActions() called.')
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LIST_ACTIONS), 1, 1, 1)
+
+    local houseId = self.House.GetHouseId()
+    if not houseId then
+        return self:CommandComplete(false)
+    end
+
+    if self.HouseStorage:GetActionCount(houseId) == 0 then
+        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_NO_ACTIONS), 0, 1, 1)
+    else
+        self.HouseStorage:IterateActions(
+            houseId,
+            function(tag, action)
+                self.messageWindow:AddText(tag .. ' - ' .. action.label, 0, 1, 1)
+            end
+        )
+    end
+
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTIONS_LISTED), 0, 1, 0)
+
+    return self:CommandComplete(true)
+end
+
+function ParaselenePoltergeist:DeleteAction(tag)
+    self.logger:Info('DeleteAction() called.')
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_ACTION), 1, 1, 1)
+
+    tag = self:CanonizeTag(tag)
+    if not tag then
+        return self:CommandComplete(false)
+    end
+
+    local houseId = self.House.GetHouseId()
+    if not houseId then
+        return self:CommandComplete(false)
+    end
+
+    if not self.HouseStorage:DeleteAction(houseId, tag) then
+        return self:CommandComplete(false)
+    end
+
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTION_DELETED), 0, 1, 0)
 
     return self:CommandComplete(true)
 end
