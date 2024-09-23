@@ -400,7 +400,7 @@ function ParaselenePoltergeist:DeleteClipboardCommand()
         return self:CommandComplete(false)
     end
 
-    if not self.HouseStorage:ClearClipboard(houseId) then
+    if not self.HouseStorage:DeleteClipboard(houseId) then
         return self:CommandComplete(false)
     end
 

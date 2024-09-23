@@ -20,6 +20,26 @@ function ParaselenePoltergeist.Furnishing:Save()
     }
 end
 
+function ParaselenePoltergeist.Furnishing.EditorModeToString(editorMode)
+    if editorMode == HOUSING_EDITOR_MODE_BROWSE then
+        return 'HOUSING_EDITOR_MODE_BROWSE'
+    elseif editorMode == HOUSING_EDITOR_MODE_DISABLED then
+        return 'HOUSING_EDITOR_MODE_DISABLED'
+    elseif editorMode == HOUSING_EDITOR_MODE_LINK then
+        return 'HOUSING_EDITOR_MODE_LINK'
+    elseif editorMode == HOUSING_EDITOR_MODE_NODE_PLACEMENT then
+        return 'HOUSING_EDITOR_MODE_NODE_PLACEMENT'
+    elseif editorMode == HOUSING_EDITOR_MODE_PATH then
+        return 'HOUSING_EDITOR_MODE_PATH'
+    elseif editorMode == HOUSING_EDITOR_MODE_PLACEMENT then
+        return 'HOUSING_EDITOR_MODE_PLACEMENT'
+    elseif editorMode == HOUSING_EDITOR_MODE_SELECTION then
+        return 'HOUSING_EDITOR_MODE_SELECTION'
+    end
+
+    return 'Unknown'
+end
+
 function ParaselenePoltergeist.Furnishing.GetEditorMode()
     local editorMode = GetHousingEditorMode()
     if type(editorMode) ~= 'number' then
@@ -49,24 +69,48 @@ function ParaselenePoltergeist.Furnishing.GetEditorMode()
     return editorMode
 end
 
-function ParaselenePoltergeist.Furnishing.EditorModeToString(editorMode)
-    if editorMode == HOUSING_EDITOR_MODE_BROWSE then
-        return 'HOUSING_EDITOR_MODE_BROWSE'
-    elseif editorMode == HOUSING_EDITOR_MODE_DISABLED then
-        return 'HOUSING_EDITOR_MODE_DISABLED'
-    elseif editorMode == HOUSING_EDITOR_MODE_LINK then
-        return 'HOUSING_EDITOR_MODE_LINK'
-    elseif editorMode == HOUSING_EDITOR_MODE_NODE_PLACEMENT then
-        return 'HOUSING_EDITOR_MODE_NODE_PLACEMENT'
-    elseif editorMode == HOUSING_EDITOR_MODE_PATH then
-        return 'HOUSING_EDITOR_MODE_PATH'
-    elseif editorMode == HOUSING_EDITOR_MODE_PLACEMENT then
-        return 'HOUSING_EDITOR_MODE_PLACEMENT'
-    elseif editorMode == HOUSING_EDITOR_MODE_SELECTION then
-        return 'HOUSING_EDITOR_MODE_SELECTION'
+function ParaselenePoltergeist.Furnishing.GetLinkFromFurnitureId(furnitureId64)
+    local link, collectibleLink = GetPlacedFurnitureLink(furnitureId64, LINK_STYLE_BRACKETS)
+    ParaselenePoltergeist.logger:Info('link = [' .. (link or 'nil') .. ']')
+    ParaselenePoltergeist.logger:Info('collectibleLink = [' .. (collectibleLink or 'nil') .. ']')
+
+    if not link or (link == '') then
+        ParaselenePoltergeist.logger:Info('Using the collectibleLink as link.')
+        link = collectibleLink
     end
 
-    return 'Unknown'
+    if not link then
+        ParaselenePoltergeist.logger:Warn('Unable to use either the furniture link or the collectibleLink.')
+        return nil
+    end
+
+    return link
+end
+
+function ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
+    local startIndex
+    if (#link >= 10) and (string.sub(link, 4, 9) == ':item:') then
+        startIndex = 10
+        ParaselenePoltergeist.logger:Info('The link type is [item].')
+    elseif (#link >= 17) and (string.sub(link, 4, 16) == ':collectible:') then
+        startIndex = 17
+        ParaselenePoltergeist.logger:Info('The link type is [collectible].')
+    else
+        ParaselenePoltergeist.logger:Warn('Unable to determine the link type.')
+        return nil
+    end
+
+    local startOfId, endOfId = string.find(link, '[0-9]+', startIndex, false)
+
+    if (not startOfId) or (startOfId ~= startIndex) then
+        ParaselenePoltergeist.logger:Warn('Unable to get the item ID from the link or collectibleLink.')
+        return nil
+    end
+
+    local itemId = tonumber(string.sub(link, startOfId, endOfId))
+    ParaselenePoltergeist.logger:Info('itemId = [' .. itemId .. ']')
+
+    return itemId
 end
 
 function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
@@ -115,54 +159,10 @@ function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
     }
 end
 
-function ParaselenePoltergeist.Furnishing.GetLinkFromFurnitureId(furnitureId64)
-    local link, collectibleLink = GetPlacedFurnitureLink(furnitureId64, LINK_STYLE_BRACKETS)
-    ParaselenePoltergeist.logger:Info('link = [' .. (link or 'nil') .. ']')
-    ParaselenePoltergeist.logger:Info('collectibleLink = [' .. (collectibleLink or 'nil') .. ']')
-
-    if not link or (link == '') then
-        ParaselenePoltergeist.logger:Info('Using the collectibleLink as link.')
-        link = collectibleLink
-    end
-
-    if not link then
-        ParaselenePoltergeist.logger:Warn('Unable to use either the furniture link or the collectibleLink.')
-        return nil
-    end
-
-    return link
-end
-
-function ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
-    local startIndex
-    if (#link >= 10) and (string.sub(link, 4, 9) == ':item:') then
-        startIndex = 10
-        ParaselenePoltergeist.logger:Info('The link type is [item].')
-    elseif (#link >= 17) and (string.sub(link, 4, 16) == ':collectible:') then
-        startIndex = 17
-        ParaselenePoltergeist.logger:Info('The link type is [collectible].')
-    else
-        ParaselenePoltergeist.logger:Warn('Unable to determine the link type.')
-        return nil
-    end
-
-    local startOfId, endOfId = string.find(link, '[0-9]+', startIndex, false)
-
-    if (not startOfId) or (startOfId ~= startIndex) then
-        ParaselenePoltergeist.logger:Warn('Unable to get the item ID from the link or collectibleLink.')
-        return nil
-    end
-
-    local itemId = tonumber(string.sub(link, startOfId, endOfId))
-    ParaselenePoltergeist.logger:Info('itemId = [' .. itemId .. ']')
-
-    return itemId
+function ParaselenePoltergeist.Furnishing:GetTag()
+    return self.tag
 end
 
 function ParaselenePoltergeist.Furnishing:GetLink()
     return self.link
-end
-
-function ParaselenePoltergeist.Furnishing:GetTag()
-    return self.tag
 end

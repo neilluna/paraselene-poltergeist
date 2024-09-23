@@ -3,6 +3,7 @@ ParaselenePoltergeist.HouseStorage = {
 }
 
 function ParaselenePoltergeist.HouseStorage:Load(initData)
+    self.storage = {}
     for houseId, house in pairs(initData.storage) do
         self.storage[houseId] = ParaselenePoltergeist.House:Create(house)
     end
@@ -48,7 +49,7 @@ function ParaselenePoltergeist.HouseStorage:GetClipboard(houseId)
     return self.storage[houseId]:GetClipboard()
 end
 
-function ParaselenePoltergeist.HouseStorage:ClearClipboard(houseId)
+function ParaselenePoltergeist.HouseStorage:DeleteClipboard(houseId)
     if not self.storage[houseId] then
         ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
         ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)

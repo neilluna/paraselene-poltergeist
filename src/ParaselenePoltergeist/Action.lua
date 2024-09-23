@@ -16,10 +16,10 @@ function ParaselenePoltergeist.Action:Save()
     }
 end
 
-function ParaselenePoltergeist.Action:SetLabel(label)
-    self.label = label
-end
-
 function ParaselenePoltergeist.Action:GetLabel()
     return self.label
+end
+
+function ParaselenePoltergeist.Action:SetLabel(label)
+    self.label = label
 end
