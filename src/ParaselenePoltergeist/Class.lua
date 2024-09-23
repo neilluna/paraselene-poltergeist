@@ -5,8 +5,10 @@ ParaselenePoltergeist = {
 
     displayName = nil,
 
-    logger = nil,  -- LibDebugLogger:Create()
-    messageWindow = nil,  -- LibMsgWin:CreateMsgWindow()
+    logger = nil,  -- LibDebugLogger
+    chatWindow = nil,  -- LibChatMessage
+    messageWindow = nil,  -- LibMsgWin
+
     lsc = nil,  -- LibSlashCommander
 
     RAD45 = math.rad(45),

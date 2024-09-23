@@ -58,6 +58,59 @@ function ParaselenePoltergeist.HouseStorage:ClearClipboard(houseId)
     return self.storage[houseId]:ClearClipboard()
 end
 
+function ParaselenePoltergeist.HouseStorage:LoadAction(houseId, tag)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_ACTION_DOES_NOT_EXIST), tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    return self.storage[houseId]:LoadAction(tag)
+end
+
+function ParaselenePoltergeist.HouseStorage:SaveAction(houseId, label)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
+        return false
+    end
+
+    return self.storage[houseId]:SaveAction(label)
+end
+
+function ParaselenePoltergeist.HouseStorage:GetActionCount(houseId)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        return 0
+    end
+
+    return self.storage[houseId]:GetActionCount()
+end
+
+function ParaselenePoltergeist.HouseStorage:IterateActions(houseId, actionFunction)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_NO_ACTIONS), 1, 0, 0)
+        return false
+    end
+
+    self.storage[houseId]:IterateActions(actionFunction)
+
+    return true
+end
+
+function ParaselenePoltergeist.HouseStorage:DeleteAction(houseId, tag)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_ACTION_DOES_NOT_EXIST), tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    return self.storage[houseId]:DeleteAction(tag)
+end
+
 function ParaselenePoltergeist.HouseStorage:LoadPlacement(houseId, tag)
     if not self.storage[houseId] then
         ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)

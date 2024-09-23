@@ -5,66 +5,85 @@ ParaselenePoltergeist.localizationStrings = {
     -- Key binding action label.
     CAPTURE_PLACEMENT = 'Capture Furniture Placement',
 
-    -- Slash commands.
-    SLASH_COMMAND_FULL = '/paraselenepoltergeist',
-    SLASH_COMMAND_SHORT = '/poltergeist',
-    SLASH_COMMAND_ABBR = '/ppg',
+    -- Slash command.
+    SLASH_COMMAND = '/ppg',
+    SLASH_COMMAND_DESCRIPTION = "Paraselene's Poltergeist",
+    SLASH_COMMAND_USAGE = 'Subcommands: "show", "hide", "load", "save", "list", or "delete".',
 
-    -- Slash subcommands.
-    SLASH_COMMAND_SHOW_WINDOW = 'show-window',
-    SLASH_COMMAND_HIDE_WINDOW = 'hide-window',
-    SLASH_COMMAND_TOGGLE_WINDOW = 'toggle-window',
-    SLASH_COMMAND_SHOW_CLIPBOARD = 'show-clipboard',
-    SLASH_COMMAND_CLEAR_CLIPBOARD = 'clear-clipboard',
-    SLASH_COMMAND_LOAD_ACTION = 'load-action',
-    SLASH_COMMAND_SAVE_ACTION = 'save-action',
-    SLASH_COMMAND_LIST_ACTIONS = 'list-actions',
-    SLASH_COMMAND_DELETE_ACTION = 'delete-action',
-    SLASH_COMMAND_LOAD_PLACEMENT = 'load-placement',
-    SLASH_COMMAND_SAVE_PLACEMENT = 'save-placement',
-    SLASH_COMMAND_LIST_PLACEMENTS = 'list-placements',
-    SLASH_COMMAND_DELETE_PLACEMENT = 'delete-placement',
-    
-    -- Slash command help.
-    SLASH_COMMAND_LSC_HELP = "Paraselene's Poltergeist",
-    SLASH_COMMAND_SHOW_WINDOW_LSC_HELP = 'Show the message window',
-    SLASH_COMMAND_HIDE_WINDOW_LSC_HELP = 'Hide the message window',
-    SLASH_COMMAND_TOGGLE_WINDOW_LSC_HELP = 'Toggle the message window',
-    SLASH_COMMAND_SHOW_CLIPBOARD_LSC_HELP = 'Show the clipboard',
-    SLASH_COMMAND_CLEAR_CLIPBOARD_LSC_HELP = 'Clear the clipboard',
-    SLASH_COMMAND_LOAD_ACTION_LSC_HELP = 'Load an action',
-    SLASH_COMMAND_SAVE_ACTION_LSC_HELP = 'Save an action',
-    SLASH_COMMAND_LIST_ACTIONS_LSC_HELP = 'List all actions',
-    SLASH_COMMAND_DELETE_ACTION_LSC_HELP = 'Delete an action',
-    SLASH_COMMAND_LOAD_PLACEMENT_LSC_HELP = 'Load a placement',
-    SLASH_COMMAND_SAVE_PLACEMENT_LSC_HELP = 'Save a placement',
-    SLASH_COMMAND_LIST_PLACEMENTS_LSC_HELP = 'List all placements',
-    SLASH_COMMAND_DELETE_PLACEMENT_LSC_HELP = 'Delete a placement',
+    -- Slash command verbs.
+    COMMAND_VERB_SHOW = 'show',
+    COMMAND_VERB_SHOW_DESCRIPTION = '"show" subcommands',
+    COMMAND_VERB_SHOW_USAGE = 'Subcommands: "clipboard" or "window".',
+
+    COMMAND_VERB_HIDE = 'hide',
+    COMMAND_VERB_HIDE_DESCRIPTION = '"hide" subcommands',
+    COMMAND_VERB_HIDE_USAGE = 'Subcommands: "window".',
+
+    COMMAND_VERB_LOAD = 'load',
+    COMMAND_VERB_LOAD_DESCRIPTION = '"load" subcommands',
+    COMMAND_VERB_LOAD_USAGE = 'Subcommands: "action" or "placement".',
+
+    COMMAND_VERB_SAVE = 'save',
+    COMMAND_VERB_SAVE_DESCRIPTION = '"save" subcommands',
+    COMMAND_VERB_SAVE_USAGE = 'Subcommands: "action" or "placement".',
+
+    COMMAND_VERB_LIST = 'list',
+    COMMAND_VERB_LIST_DESCRIPTION = '"list" subcommands',
+    COMMAND_VERB_LIST_USAGE = 'Subcommands: "actions" or "placements".',
+
+    COMMAND_VERB_DELETE = 'delete',
+    COMMAND_VERB_DELETE_DESCRIPTION = '"delete" subcommands',
+    COMMAND_VERB_DELETE_USAGE = 'Subcommands: "action", "clipboard", or "placement".',
+
+    -- Slash command targets.
+    COMMAND_TARGET_CLIPBOARD = 'clipboard',
+    COMMAND_SHOW_CLIPBOARD_DESCRIPTION = 'Show the clipboard contents',
+    COMMAND_DELETE_CLIPBOARD_DESCRIPTION = 'Delete the clipboard contents',
+
+    COMMAND_TARGET_WINDOW = 'window',
+    COMMAND_SHOW_WINDOW_DESCRIPTION = 'Show the message window',
+    COMMAND_HIDE_WINDOW_DESCRIPTION = 'Hide the message window',
+
+    COMMAND_TARGET_ACTION = 'action',
+    COMMAND_LOAD_ACTION_DESCRIPTION = 'Load an action',
+    COMMAND_SAVE_ACTION_DESCRIPTION = 'Save an action',
+    COMMAND_DELETE_ACTION_DESCRIPTION = 'Delete an action',
+
+    COMMAND_TARGET_PLACEMENT = 'placement',
+    COMMAND_LOAD_PLACEMENT_DESCRIPTION = 'Load a placement',
+    COMMAND_SAVE_PLACEMENT_DESCRIPTION = 'Save a placement',
+    COMMAND_DELETE_PLACEMENT_DESCRIPTION = 'Delete a placement',
+
+    COMMAND_TARGET_ACTIONS = 'actions',
+    COMMAND_LIST_ACTIONS_DESCRIPTION = 'List all actions',
+
+    COMMAND_TARGET_PLACEMENTS = 'placements',
+    COMMAND_LIST_PLACEMENTS_DESCRIPTION = 'List all placements',
 
     -- Command acknowledgements.
     ACK_CAPTURE_PLACEMENT = 'Capture furniture placement',
-    ACK_SHOW_CLIPBOARD = 'Show clipboard',
-    ACK_CLEAR_CLIPBOARD = 'Clear clipboard',
-    ACK_LOAD_ACTION = 'Load action',
-    ACK_SAVE_ACTION = 'Save action',
-    ACK_LIST_ACTIONS = 'List actions',
-    ACK_DELETE_ACTION = 'Delete action',
-    ACK_LOAD_PLACEMENT = 'Load placement',
-    ACK_SAVE_PLACEMENT = 'Save placement',
-    ACK_LIST_PLACEMENTS = 'List placements',
+    ACK_SHOW_CLIPBOARD = 'Show the clipboard contents',
+    ACK_LOAD_ACTION = 'Load an action',
+    ACK_LOAD_PLACEMENT = 'Load a placement',
+    ACK_SAVE_ACTION = 'Save an action',
+    ACK_SAVE_PLACEMENT = 'Save a placement',
+    ACK_LIST_ACTIONS = 'List all actions',
+    ACK_LIST_PLACEMENTS = 'List all placements',
+    ACK_DELETE_ACTION = 'Delete an action',
+    ACK_DELETE_CLIPBOARD = 'Delete clipboard contents',
     ACK_DELETE_PLACEMENT = 'Delete placement',
 
     -- Response headers.
     RES_PLACEMENT_CAPTURED = 'Furniture placement captured',
-    RES_CLIPBOARD_SHOWN = 'Clipboard shown',
-    RES_CLIPBOARD_CLEARED = 'Clipboard cleared',
+    RES_CLIPBOARD_SHOWN = 'Clipboard contents shown',
     RES_ACTION_LOADED = 'Action loaded',
-    RES_ACTION_SAVED = 'Action saved',
-    RES_ACTIONS_LISTED = 'Actions listed',
-    RES_ACTION_DELETED = 'Action deleted',
     RES_PLACEMENT_LOADED = 'Placement loaded',
+    RES_ACTION_SAVED = 'Action saved',
     RES_PLACEMENT_SAVED = 'Placement saved',
+    RES_ACTIONS_LISTED = 'Actions listed',
     RES_PLACEMENTS_LISTED = 'Placements listed',
+    RES_ACTION_DELETED = 'Action deleted',
+    RES_CLIPBOARD_DELETED = 'Clipboard contents deleted',
     RES_PLACEMENT_DELETED = 'Placement deleted',
 
     -- Status.
@@ -72,7 +91,7 @@ ParaselenePoltergeist.localizationStrings = {
     CLIPBOARD_IS_NOT_AN_ACTION = 'The clipboard does not contain an action.',
     CLIPBOARD_IS_NOT_A_PLACEMENT = 'The clipboard does not contain a placement.',
 
-    -- Errors.
+    -- Errors and warnings.
     INVALID_TAG = 'The specified tag is invalid.',
     INVALID_LABEL = 'The specified label is invalid.',
     MUST_BE_IN_OWN_HOUSE = 'You must be in one of your own houses.',
