@@ -101,6 +101,17 @@ function ParaselenePoltergeist.HouseStorage:IterateActions(houseId, actionFuncti
     return true
 end
 
+function ParaselenePoltergeist.HouseStorage:InvokeAction(houseId, tag)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_ACTION_DOES_NOT_EXIST), tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    return self.storage[houseId]:InvokeAction(tag)
+end
+
 function ParaselenePoltergeist.HouseStorage:DeleteAction(houseId, tag)
     if not self.storage[houseId] then
         ParaselenePoltergeist.logger:Info('House %d does not exist in the house storage.', houseId)

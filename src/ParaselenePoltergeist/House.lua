@@ -18,7 +18,7 @@ end
 function ParaselenePoltergeist.House.Init()
     return ParaselenePoltergeist.House:Create{
         actions = ParaselenePoltergeist.ActionStorage.Init(),
-        placements = ParaselenePoltergeist.PlacementStorage.Init()
+        placements = ParaselenePoltergeist.PlacementStorage.Init(),
     }
 end
 
@@ -145,6 +145,10 @@ end
 
 function ParaselenePoltergeist.House:IterateActions(actionFunction)
     self.actions:IterateActions(actionFunction)
+end
+
+function ParaselenePoltergeist.House:InvokeAction(tag)
+    return self.actions:InvokeAction(tag)
 end
 
 function ParaselenePoltergeist.House:DeleteAction(tag)

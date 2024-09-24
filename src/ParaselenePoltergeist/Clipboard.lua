@@ -1,7 +1,7 @@
 ParaselenePoltergeist.Clipboard = {
     -- Content types (persisted enumeration).
-    ACTION = 'ACTION',
-    PLACEMENT = 'PLACEMENT',
+    ACTION = 'Action',
+    PLACEMENT = 'Placement',
 }
 
 function ParaselenePoltergeist.Clipboard:Create(initData)

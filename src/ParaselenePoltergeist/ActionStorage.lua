@@ -75,6 +75,17 @@ function ParaselenePoltergeist.ActionStorage:IterateActions(actionFunction)
     end
 end
 
+function ParaselenePoltergeist.ActionStorage:InvokeAction(tag)
+    if not self.storage[tag] then
+        ParaselenePoltergeist.logger:Info('Action %d does not exist in the action storage.', tag)
+        local message = string.format(GetString(PARASELENE_POLTERGEIST_ACTION_DOES_NOT_EXIST), tag)
+        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        return false
+    end
+
+    return self.storage[tag]:Invoke()
+end
+
 function ParaselenePoltergeist.ActionStorage:DeleteAction(tag)
     if not self.storage[tag] then
         ParaselenePoltergeist.logger:Info('Action %d does not exist in the action storage.', tag)
