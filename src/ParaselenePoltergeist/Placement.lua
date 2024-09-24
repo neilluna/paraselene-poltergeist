@@ -30,8 +30,8 @@ function ParaselenePoltergeist.Placement:Save()
     }
 end
 
-function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
-    local label = GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. tag
+function ParaselenePoltergeist.Placement.Capture(furnitureId)
+    local label = GetString(PARASELENE_POLTERGEIST_NEW_PLACEMENT)
     ParaselenePoltergeist.logger:Info('label = ['  .. label .. '].')
 
     local furnitureId64 = StringToId64(furnitureId)

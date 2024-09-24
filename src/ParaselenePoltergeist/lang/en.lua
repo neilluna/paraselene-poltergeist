@@ -104,8 +104,13 @@ ParaselenePoltergeist.localizationStrings = {
     NO_PLACEMENTS = 'There are no placements in this house.',
 
     -- Tag phrases.
+    ACTION_TAG = 'Action #',
     FURNITURE_TAG = 'Furniture #',
     PLACEMENT_TAG = 'Placement #',
+
+    -- New item labels.
+    NEW_ACTION = 'New action',
+    NEW_PLACEMENT = 'New placement',
 
     -- Furniture placement variables.
     X = 'X: ',

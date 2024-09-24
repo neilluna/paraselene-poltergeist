@@ -65,6 +65,32 @@ function ParaselenePoltergeist:ShowCommand()
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_SHOW_USAGE), 0, 1, 0)
 end
 
+function ParaselenePoltergeist:ShowClipboardAction(tag, action)
+    local taggedLabel = tag .. ' - ' .. action:GetLabel()
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACTION_TAG) .. taggedLabel, 0, 1, 1)
+end
+
+function ParaselenePoltergeist:ShowClipboardPlacement(tag, placement)
+    local taggedLabel = tag .. ' - ' .. placement:GetLabel()
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedLabel, 0, 1, 1)
+
+    local furnitureId = placement:GetFurnitureId()
+    local furniture = self.FurnishingStorage:GetFurniture(furnitureId)
+
+    local taggedLink = furniture:GetTag() .. ' - ' .. furniture:GetLink()
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_FURNITURE_TAG) .. taggedLink, 0, 1, 1)
+
+    local x, y, z = placement:GetPosition()
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. x, 0, 1, 1)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. y, 0, 1, 1)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. z, 0, 1, 1)
+
+    local pitch, roll, yaw = placement:GetOrientation()
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. pitch, 0, 1, 1)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. roll, 0, 1, 1)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. yaw, 0, 1, 1)
+end
+
 function ParaselenePoltergeist:ShowClipboardCommand()
     self.logger:Info('ShowClipboardCommand() called.')
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_SHOW_CLIPBOARD), 1, 1, 1)
@@ -78,26 +104,13 @@ function ParaselenePoltergeist:ShowClipboardCommand()
         self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 0, 1, 1)
     else
         local clipboard = self.HouseStorage:GetClipboard(houseId)
-        local placement = clipboard:GetContent()
+        local content = clipboard:GetContent()
 
-        local taggedPlacementLabel = clipboard:GetTag() .. ' - ' .. placement:GetLabel()
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedPlacementLabel, 0, 1, 1)
-
-        local furnitureId = placement:GetFurnitureId()
-        local furniture = self.FurnishingStorage:GetFurniture(furnitureId)
-
-        local taggedFurnitureLink = furniture:GetTag() .. ' - ' .. furniture:GetLink()
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_FURNITURE_TAG) .. taggedFurnitureLink, 0, 1, 1)
-
-        local x, y, z = placement:GetPosition()
-        local pitch, roll, yaw = placement:GetOrientation()
-
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. x, 0, 1, 1)
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. y, 0, 1, 1)
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. z, 0, 1, 1)
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. pitch, 0, 1, 1)
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. roll, 0, 1, 1)
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. yaw, 0, 1, 1)
+        if clipboard:GetType() == self.Clipboard.ACTION then
+            self:ShowClipboardAction(clipboard:GetTag(), content)
+        elseif clipboard:GetType() == self.Clipboard.PLACEMENT then
+            self:ShowClipboardPlacement(clipboard:GetTag(), content)
+        end
     end
 
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_SHOWN), 0, 1, 0)

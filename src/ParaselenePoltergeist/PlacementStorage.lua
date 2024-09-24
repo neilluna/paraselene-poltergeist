@@ -35,7 +35,7 @@ function ParaselenePoltergeist.PlacementStorage:Save()
 end
 
 function ParaselenePoltergeist.PlacementStorage:Capture(furnitureId)
-    return ParaselenePoltergeist.Placement.Capture(furnitureId, self.nextAvailableTag), self.nextAvailableTag
+    return ParaselenePoltergeist.Placement.Capture(furnitureId), self.nextAvailableTag
 end
 
 function ParaselenePoltergeist.PlacementStorage:GetPlacement(tag)
