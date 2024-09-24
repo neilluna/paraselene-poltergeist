@@ -49,8 +49,44 @@ function ParaselenePoltergeist:ParentCommand()
     self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_USAGE), 0, 1, 0)
 end
 
+function ParaselenePoltergeist:CreateCommand()
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_USAGE), 0, 1, 0)
+end
+
+function ParaselenePoltergeist:CreateActionCommand(tag)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_ACTION_USAGE), 0, 1, 0)
+end
+
+function ParaselenePoltergeist:CreateMoveActionCommand(tag)
+    self.logger:Info('CreateMoveActionCommand() called.')
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_CREATE_MOVE_ACTION), 1, 1, 1)
+
+    -- TODO: Implement this command.
+
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_MOVE_ACTION_CREATED), 0, 1, 0)
+
+    return self:CommandComplete(true)
+end
+
+function ParaselenePoltergeist:CreateCommands(parentCommand)
+    local createCommand = parentCommand:RegisterSubCommand()
+    createCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE))
+    createCommand:SetCallback(function() self:CreateCommand() end)
+    createCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_DESCRIPTION))
+
+    local createActionCommand = createCommand:RegisterSubCommand()
+    createActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION))
+    createActionCommand:SetCallback(function(args) self:CreateActionCommand(args) end)
+    createActionCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_ACTION_DESCRIPTION))
+
+    local createMoveActionCommand = createActionCommand:RegisterSubCommand()
+    createMoveActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_MOVE_ACTION))
+    createMoveActionCommand:SetCallback(function(args) self:CreateMoveActionCommand(args) end)
+    createMoveActionCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_MOVE_ACTION_DESCRIPTION))
+end
+
 function ParaselenePoltergeist:DeleteCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_DELETE_USAGE), 0, 1, 0)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_USAGE), 0, 1, 0)
 end
 
 function ParaselenePoltergeist:DeleteActionCommand(tag)
@@ -119,28 +155,28 @@ end
 
 function ParaselenePoltergeist:DeleteCommands(parentCommand)
     local deleteCommand = parentCommand:RegisterSubCommand()
-    deleteCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_DELETE))
+    deleteCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE))
     deleteCommand:SetCallback(function() self:DeleteCommand() end)
-    deleteCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_DELETE_DESCRIPTION))
+    deleteCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_DESCRIPTION))
 
     local deleteActionCommand = deleteCommand:RegisterSubCommand()
-    deleteActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_ACTION))
+    deleteActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION))
     deleteActionCommand:SetCallback(function(args) self:DeleteActionCommand(args) end)
     deleteActionCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_ACTION_DESCRIPTION))
 
     local deleteClipboardCommand = deleteCommand:RegisterSubCommand()
-    deleteClipboardCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_CLIPBOARD))
+    deleteClipboardCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_CLIPBOARD))
     deleteClipboardCommand:SetCallback(function() self:DeleteClipboardCommand() end)
     deleteClipboardCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_CLIPBOARD_DESCRIPTION))
 
     local deletePlacementCommand = deleteCommand:RegisterSubCommand()
-    deletePlacementCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_PLACEMENT))
+    deletePlacementCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENT))
     deletePlacementCommand:SetCallback(function(args) self:DeletePlacementCommand(args) end)
     deletePlacementCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_PLACEMENT_DESCRIPTION))
 end
 
 function ParaselenePoltergeist:HideCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_HIDE_USAGE), 0, 1, 0)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE_USAGE), 0, 1, 0)
 end
 
 function ParaselenePoltergeist:HideWindowCommand()
@@ -155,18 +191,18 @@ end
 
 function ParaselenePoltergeist:HideCommands(parentCommand)
     local hideCommand = parentCommand:RegisterSubCommand()
-    hideCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_HIDE))
+    hideCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE))
     hideCommand:SetCallback(function() self:HideCommand() end)
-    hideCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_HIDE_DESCRIPTION))
+    hideCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE_DESCRIPTION))
 
     local hideWindowCommand = hideCommand:RegisterSubCommand()
-    hideWindowCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_WINDOW))
+    hideWindowCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_WINDOW))
     hideWindowCommand:SetCallback(function() self:HideWindowCommand() end)
     hideWindowCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE_WINDOW_DESCRIPTION))
 end
 
 function ParaselenePoltergeist:InvokeCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_INVOKE_USAGE), 0, 1, 0)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE_USAGE), 0, 1, 0)
 end
 
 function ParaselenePoltergeist:InvokeActionCommand(tag)
@@ -194,18 +230,18 @@ end
 
 function ParaselenePoltergeist:InvokeCommands(parentCommand)
     local invokeCommand = parentCommand:RegisterSubCommand()
-    invokeCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_INVOKE))
+    invokeCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE))
     invokeCommand:SetCallback(function() self:InvokeCommand() end)
-    invokeCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_INVOKE_DESCRIPTION))
+    invokeCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE_DESCRIPTION))
 
     local invokeActionCommand = invokeCommand:RegisterSubCommand()
-    invokeActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_ACTION))
+    invokeActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION))
     invokeActionCommand:SetCallback(function(args) self:InvokeActionCommand(args) end)
     invokeActionCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE_ACTION_DESCRIPTION))
 end
 
 function ParaselenePoltergeist:ListCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_LIST_USAGE), 0, 1, 0)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST_USAGE), 0, 1, 0)
 end
 
 function ParaselenePoltergeist:ListActionsCommand()
@@ -260,23 +296,23 @@ end
 
 function ParaselenePoltergeist:ListCommands(parentCommand)
     local listCommand = parentCommand:RegisterSubCommand()
-    listCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_LIST))
+    listCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST))
     listCommand:SetCallback(function() self:ListCommand() end)
-    listCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_LIST_DESCRIPTION))
+    listCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST_DESCRIPTION))
 
     local listActionsCommand = listCommand:RegisterSubCommand()
-    listActionsCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_ACTIONS))
+    listActionsCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_ACTIONS))
     listActionsCommand:SetCallback(function() self:ListActionsCommand() end)
     listActionsCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST_ACTIONS_DESCRIPTION))
 
     local listPlacementsCommand = listCommand:RegisterSubCommand()
-    listPlacementsCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_PLACEMENTS))
+    listPlacementsCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENTS))
     listPlacementsCommand:SetCallback(function() self:ListPlacementsCommand() end)
     listPlacementsCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST_PLACEMENTS_DESCRIPTION))
 end
 
 function ParaselenePoltergeist:LoadCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_LOAD_USAGE), 0, 1, 0)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD_USAGE), 0, 1, 0)
 end
 
 function ParaselenePoltergeist:LoadActionCommand(tag)
@@ -327,23 +363,23 @@ end
 
 function ParaselenePoltergeist:LoadCommands(parentCommand)
     local loadCommand = parentCommand:RegisterSubCommand()
-    loadCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_LOAD))
+    loadCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD))
     loadCommand:SetCallback(function() self:LoadCommand() end)
-    loadCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_LOAD_DESCRIPTION))
+    loadCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD_DESCRIPTION))
 
     local loadActionCommand = loadCommand:RegisterSubCommand()
-    loadActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_ACTION))
+    loadActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION))
     loadActionCommand:SetCallback(function(args) self:LoadActionCommand(args) end)
     loadActionCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD_ACTION_DESCRIPTION))
 
     local loadPlacementCommand = loadCommand:RegisterSubCommand()
-    loadPlacementCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_PLACEMENT))
+    loadPlacementCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENT))
     loadPlacementCommand:SetCallback(function(args) self:LoadPlacementCommand(args) end)
     loadPlacementCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD_PLACEMENT_DESCRIPTION))
 end
 
 function ParaselenePoltergeist:SaveCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_SAVE_USAGE), 0, 1, 0)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE_USAGE), 0, 1, 0)
 end
 
 function ParaselenePoltergeist:CanonizeLabel(label)
@@ -410,23 +446,23 @@ end
 
 function ParaselenePoltergeist:SaveCommands(parentCommand)
     local saveCommand = parentCommand:RegisterSubCommand()
-    saveCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_SAVE))
+    saveCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE))
     saveCommand:SetCallback(function() self:SaveCommand() end)
-    saveCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_SAVE_DESCRIPTION))
+    saveCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE_DESCRIPTION))
 
     local saveActionCommand = saveCommand:RegisterSubCommand()
-    saveActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_ACTION))
+    saveActionCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION))
     saveActionCommand:SetCallback(function(args) self:SaveActionCommand(args) end)
     saveActionCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE_ACTION_DESCRIPTION))
 
     local savePlacementCommand = saveCommand:RegisterSubCommand()
-    savePlacementCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_PLACEMENT))
+    savePlacementCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENT))
     savePlacementCommand:SetCallback(function(args) self:SavePlacementCommand(args) end)
     savePlacementCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE_PLACEMENT_DESCRIPTION))
 end
 
 function ParaselenePoltergeist:ShowCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_SHOW_USAGE), 0, 1, 0)
+    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW_USAGE), 0, 1, 0)
 end
 
 function ParaselenePoltergeist:ShowClipboardMoveActionData(action)
@@ -502,22 +538,22 @@ end
 
 function ParaselenePoltergeist:ShowCommands(parentCommand)
     local showCommand = parentCommand:RegisterSubCommand()
-    showCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_SHOW))
+    showCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW))
     showCommand:SetCallback(function() self:ShowCommand() end)
-    showCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_VERB_SHOW_DESCRIPTION))
+    showCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW_DESCRIPTION))
 
     local showClipboardCommand = showCommand:RegisterSubCommand()
-    showClipboardCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_CLIPBOARD))
+    showClipboardCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_CLIPBOARD))
     showClipboardCommand:SetCallback(function() self:ShowClipboardCommand() end)
     showClipboardCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW_CLIPBOARD_DESCRIPTION))
 
     local showWindowCommand = showCommand:RegisterSubCommand()
-    showWindowCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_TARGET_WINDOW))
+    showWindowCommand:AddAlias(GetString(PARASELENE_POLTERGEIST_COMMAND_WINDOW))
     showWindowCommand:SetCallback(function() self:ShowWindowCommand() end)
     showWindowCommand:SetDescription(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW_WINDOW_DESCRIPTION))
 end
 
-function ParaselenePoltergeist:CreateCommands()
+function ParaselenePoltergeist:CreateSlashCommands()
     self.lsc = LibSlashCommander
     local parentCommand = self.lsc:Register(
         GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND),
@@ -525,6 +561,7 @@ function ParaselenePoltergeist:CreateCommands()
         GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_DESCRIPTION)
     )
 
+    self:CreateCommands(parentCommand)
     self:DeleteCommands(parentCommand)
     self:HideCommands(parentCommand)
     self:InvokeCommands(parentCommand)

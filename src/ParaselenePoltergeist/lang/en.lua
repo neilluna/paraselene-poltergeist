@@ -8,65 +8,89 @@ ParaselenePoltergeist.localizationStrings = {
     -- Slash command.
     SLASH_COMMAND = '/ppg',
     SLASH_COMMAND_DESCRIPTION = "Paraselene's Poltergeist",
-    SLASH_COMMAND_USAGE = 'Subcommands: "delete", "hide", "invoke", "list", "load", "save", or "show".',
+    SLASH_COMMAND_USAGE = 'Specify "delete", "hide", "invoke", "list", "load", "save", or "show".',
 
     -- Slash command verbs.
-    COMMAND_VERB_DELETE = 'delete',
-    COMMAND_VERB_DELETE_DESCRIPTION = '"delete" subcommands',
-    COMMAND_VERB_DELETE_USAGE = 'Subcommands: "action", "clipboard", or "placement".',
+    COMMAND_CREATE = 'create',
+    COMMAND_CREATE_DESCRIPTION = '"create" subcommands',
+    COMMAND_CREATE_USAGE = 'Specify "action".',
 
-    COMMAND_VERB_HIDE = 'hide',
-    COMMAND_VERB_HIDE_DESCRIPTION = '"hide" subcommands',
-    COMMAND_VERB_HIDE_USAGE = 'Subcommands: "window".',
+    COMMAND_DELETE = 'delete',
+    COMMAND_DELETE_DESCRIPTION = '"delete" subcommands',
+    COMMAND_DELETE_USAGE = 'Specify "action", "clipboard", or "placement".',
 
-    COMMAND_VERB_INVOKE = 'invoke',
-    COMMAND_VERB_INVOKE_DESCRIPTION = '"invoke" subcommands',
-    COMMAND_VERB_INVOKE_USAGE = 'Subcommands: "action".',
+    COMMAND_HIDE = 'hide',
+    COMMAND_HIDE_DESCRIPTION = '"hide" subcommands',
+    COMMAND_HIDE_USAGE = 'Specify "window".',
 
-    COMMAND_VERB_LIST = 'list',
-    COMMAND_VERB_LIST_DESCRIPTION = '"list" subcommands',
-    COMMAND_VERB_LIST_USAGE = 'Subcommands: "actions" or "placements".',
+    COMMAND_INVOKE = 'invoke',
+    COMMAND_INVOKE_DESCRIPTION = '"invoke" subcommands',
+    COMMAND_INVOKE_USAGE = 'Specify "action".',
 
-    COMMAND_VERB_LOAD = 'load',
-    COMMAND_VERB_LOAD_DESCRIPTION = '"load" subcommands',
-    COMMAND_VERB_LOAD_USAGE = 'Subcommands: "action" or "placement".',
+    COMMAND_LIST = 'list',
+    COMMAND_LIST_DESCRIPTION = '"list" subcommands',
+    COMMAND_LIST_USAGE = 'Specify "actions" or "placements".',
 
-    COMMAND_VERB_SAVE = 'save',
-    COMMAND_VERB_SAVE_DESCRIPTION = '"save" subcommands',
-    COMMAND_VERB_SAVE_USAGE = 'Subcommands: "action" or "placement".',
+    COMMAND_LOAD = 'load',
+    COMMAND_LOAD_DESCRIPTION = '"load" subcommands',
+    COMMAND_LOAD_USAGE = 'Specify "action" or "placement".',
 
-    COMMAND_VERB_SHOW = 'show',
-    COMMAND_VERB_SHOW_DESCRIPTION = '"show" subcommands',
-    COMMAND_VERB_SHOW_USAGE = 'Subcommands: "clipboard" or "window".',
+    COMMAND_SAVE = 'save',
+    COMMAND_SAVE_DESCRIPTION = '"save" subcommands',
+    COMMAND_SAVE_USAGE = 'Specify "action" or "placement".',
+
+    COMMAND_SHOW = 'show',
+    COMMAND_SHOW_DESCRIPTION = '"show" subcommands',
+    COMMAND_SHOW_USAGE = 'Specify "clipboard" or "window".',
 
     -- Slash command targets.
-    COMMAND_TARGET_ACTION = 'action',
-    COMMAND_LOAD_ACTION_DESCRIPTION = 'Load an action',
-    COMMAND_SAVE_ACTION_DESCRIPTION = 'Save an action',
-    COMMAND_DELETE_ACTION_DESCRIPTION = 'Delete an action',
-    COMMAND_INVOKE_ACTION_DESCRIPTION = 'Invoke an action',
+    COMMAND_ACTION = 'action',
+    COMMAND_CREATE_ACTION_DESCRIPTION = 'Create an action',
+    COMMAND_CREATE_ACTION_USAGE = 'Specify "move".',
 
-    COMMAND_TARGET_ACTIONS = 'actions',
+    COMMAND_DELETE_ACTION_DESCRIPTION = 'Delete an action',
+    COMMAND_DELETE_ACTION_USAGE = 'Specify the tag of the action.',
+
+    COMMAND_INVOKE_ACTION_DESCRIPTION = 'Invoke an action',
+    COMMAND_INVOKE_ACTION_USAGE = 'Specify the tag of the action.',
+
+    COMMAND_LOAD_ACTION_DESCRIPTION = 'Load an action',
+    COMMAND_LOAD_ACTION_USAGE = 'Specify the tag of the action.',
+
+    COMMAND_SAVE_ACTION_DESCRIPTION = 'Save an action',
+    COMMAND_SAVE_ACTION_USAGE = 'Specify the label of the action.',
+
+    COMMAND_ACTIONS = 'actions',
     COMMAND_LIST_ACTIONS_DESCRIPTION = 'List all actions',
 
-    COMMAND_TARGET_CLIPBOARD = 'clipboard',
-    COMMAND_SHOW_CLIPBOARD_DESCRIPTION = 'Show the clipboard contents',
+    COMMAND_CLIPBOARD = 'clipboard',
     COMMAND_DELETE_CLIPBOARD_DESCRIPTION = 'Delete the clipboard contents',
+    COMMAND_SHOW_CLIPBOARD_DESCRIPTION = 'Show the clipboard contents',
 
-    COMMAND_TARGET_PLACEMENT = 'placement',
-    COMMAND_LOAD_PLACEMENT_DESCRIPTION = 'Load a placement',
-    COMMAND_SAVE_PLACEMENT_DESCRIPTION = 'Save a placement',
+    COMMAND_PLACEMENT = 'placement',
     COMMAND_DELETE_PLACEMENT_DESCRIPTION = 'Delete a placement',
+    COMMAND_DELETE_PLACEMENT_USAGE = 'Specify the tag of the placement.',
 
-    COMMAND_TARGET_PLACEMENTS = 'placements',
+    COMMAND_LOAD_PLACEMENT_DESCRIPTION = 'Load a placement',
+    COMMAND_LOAD_PLACEMENT_USAGE = 'Specify the tag of the placement.',
+
+    COMMAND_SAVE_PLACEMENT_DESCRIPTION = 'Save a placement',
+    COMMAND_SAVE_PLACEMENT_USAGE = 'Specify the label of the placement.',
+
+    COMMAND_PLACEMENTS = 'placements',
     COMMAND_LIST_PLACEMENTS_DESCRIPTION = 'List all placements',
 
-    COMMAND_TARGET_WINDOW = 'window',
-    COMMAND_SHOW_WINDOW_DESCRIPTION = 'Show the message window',
+    COMMAND_WINDOW = 'window',
     COMMAND_HIDE_WINDOW_DESCRIPTION = 'Hide the message window',
+    COMMAND_SHOW_WINDOW_DESCRIPTION = 'Show the message window',
+
+    -- Create action types.
+    COMMAND_MOVE_ACTION = 'move',
+    COMMAND_CREATE_MOVE_ACTION_DESCRIPTION = 'Create a move action',
 
     -- Command acknowledgements.
     ACK_CAPTURE_PLACEMENT = 'Capture furniture placement',
+    ACK_CREATE_MOVE_ACTION = 'Create a move action',
     ACK_DELETE_ACTION = 'Delete an action',
     ACK_DELETE_CLIPBOARD = 'Delete clipboard contents',
     ACK_DELETE_PLACEMENT = 'Delete placement',
@@ -88,6 +112,7 @@ ParaselenePoltergeist.localizationStrings = {
     RES_ACTIONS_LISTED = 'Actions listed',
     RES_CLIPBOARD_DELETED = 'Clipboard contents deleted',
     RES_CLIPBOARD_SHOWN = 'Clipboard contents shown',
+    RES_MOVE_ACTION_CREATED = 'Move action created',
     RES_PLACEMENT_DELETED = 'Placement deleted',
     RES_PLACEMENT_LOADED = 'Placement loaded',
     RES_PLACEMENT_SAVED = 'Placement saved',

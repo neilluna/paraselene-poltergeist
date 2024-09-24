@@ -28,7 +28,7 @@ function ParaselenePoltergeist:OnAddOnLoaded(event, name)
         'SI_BINDING_NAME_PARASELENE_POLTERGEIST_CAPTURE_PLACEMENT',
         GetString(PARASELENE_POLTERGEIST_CAPTURE_PLACEMENT)
     )
-    self:CreateCommands()
+    self:CreateSlashCommands()
 
     self.SavedVariables:Load()
     self.Settings:Load()
