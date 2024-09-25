@@ -1,6 +1,65 @@
+function ParaselenePoltergeist:Print(text, red, green, blue)
+    local lines = {}
+    for line in string.gmatch(text, '[^\r\n]+') do
+        table.insert(lines, line)
+    end
+    for _, line in pairs(lines) do
+        self.messageWindow:AddText(line, red, green, blue)
+    end
+end
+
+function ParaselenePoltergeist:PrintBlack(text)
+    self:Print(text, 0, 0, 0)
+end
+
+function ParaselenePoltergeist:PrintCyan(text)
+    self:Print(text, 0, 1, 1)
+end
+
+function ParaselenePoltergeist:PrintGreen(text)
+    self:Print(text, 0, 1, 0)
+end
+
+function ParaselenePoltergeist:PrintRed(text)
+    self:Print(text, 1, 0, 0)
+end
+
+function ParaselenePoltergeist:PrintWhite(text)
+    self:Print(text, 1, 1, 1)
+end
+
+function ParaselenePoltergeist:PrintYellow(text)
+    self:Print(text, 1, 1, 0)
+end
+
+function ParaselenePoltergeist:PrintCommandStart(text)
+    self.logger:Info('UI Message: ' .. text)
+    self:PrintWhite(text)
+end
+
+function ParaselenePoltergeist:PrintContent(text)
+    self.logger:Info('UI Message: ' .. text)
+    self:PrintCyan(text)
+end
+
+function ParaselenePoltergeist:PrintCommandEnd(text)
+    self.logger:Info('UI Message: ' .. text)
+    self:PrintGreen(text)
+end
+
+function ParaselenePoltergeist:PrintError(text)
+    self.logger:Info('UI Message: ' .. text)
+    self:PrintRed(text)
+end
+
+function ParaselenePoltergeist:PrintUsage(text)
+    self.logger:Info('UI Message: ' .. text)
+    self:PrintYellow(text)
+end
+
 function ParaselenePoltergeist:CommandComplete(result)
     self.logger:Info('CommandComplete(%s) called.', tostring(result))
-    self.messageWindow:AddText('.', 0, 0, 0)
+    self:PrintBlack('.')  -- 1 line spacer.
     return result
 end
 
@@ -10,16 +69,28 @@ function ParaselenePoltergeist:CanonizeTag(tag)
     end
 
     if (type(tag) ~= 'number') or (tag % 1 ~= 0) or (tag < 1) or (tag > 999999) then
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_INVALID_TAG), 1, 0, 0)
+        self:PrintError(GetString(PARASELENE_POLTERGEIST_INVALID_TAG))
         return nil
     end
 
     return tag
 end
 
+function ParaselenePoltergeist:CanonizeLabel(label)
+    if (type(label) == 'number') or (type(label) == 'boolean') then
+        label = tostring(label)
+    end
+    if (type(label) ~= 'string') or (#label < 1) or (#label > 100) then
+        self:PrintError(GetString(PARASELENE_POLTERGEIST_INVALID_LABEL))
+        return nil
+    end
+
+    return label
+end
+
 function ParaselenePoltergeist:CaptureCommand()
     self.logger:Info('CaptureCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_CAPTURE_PLACEMENT), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_CAPTURE_PLACEMENT))
 
     local houseId = self.House.GetHouseId()
     if not houseId then
@@ -40,31 +111,32 @@ function ParaselenePoltergeist:CaptureCommand()
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_CAPTURED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_CAPTURED))
     return self:CommandComplete(true)
 end
 
 function ParaselenePoltergeist:ParentCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:CreateCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:CreateActionCommand(tag)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_ACTION_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_ACTION_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:CreateMoveActionCommand(tag)
     self.logger:Info('CreateMoveActionCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_CREATE_MOVE_ACTION), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_CREATE_MOVE_ACTION))
 
     -- TODO: Implement this command.
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_MOVE_ACTION_CREATED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_MOVE_ACTION_CREATED))
     return self:CommandComplete(true)
 end
 
@@ -86,12 +158,13 @@ function ParaselenePoltergeist:CreateCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:DeleteCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:DeleteActionCommand(tag)
     self.logger:Info('DeleteActionCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_ACTION), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_ACTION))
 
     tag = self:CanonizeTag(tag)
     if not tag then
@@ -107,14 +180,13 @@ function ParaselenePoltergeist:DeleteActionCommand(tag)
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTION_DELETED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_ACTION_DELETED))
     return self:CommandComplete(true)
 end
 
 function ParaselenePoltergeist:DeleteClipboardCommand()
     self.logger:Info('DeleteClipboardCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_CLIPBOARD), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_CLIPBOARD))
 
     local houseId = self.House.GetHouseId()
     if not houseId then
@@ -125,14 +197,13 @@ function ParaselenePoltergeist:DeleteClipboardCommand()
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_DELETED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_DELETED))
     return self:CommandComplete(true)
 end
 
 function ParaselenePoltergeist:DeletePlacementCommand(tag)
     self.logger:Info('DeletePlacementCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_PLACEMENT), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_DELETE_PLACEMENT))
 
     tag = self:CanonizeTag(tag)
     if not tag then
@@ -148,8 +219,7 @@ function ParaselenePoltergeist:DeletePlacementCommand(tag)
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_DELETED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_DELETED))
     return self:CommandComplete(true)
 end
 
@@ -176,7 +246,8 @@ function ParaselenePoltergeist:DeleteCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:HideCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:HideWindowCommand()
@@ -185,7 +256,6 @@ function ParaselenePoltergeist:HideWindowCommand()
     self.messageWindow:SetHidden(true)
 
     self.logger:Info('Command completed.')
-
     return true
 end
 
@@ -202,12 +272,13 @@ function ParaselenePoltergeist:HideCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:InvokeCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:InvokeActionCommand(tag)
     self.logger:Info('InvokeActionCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_INVOKE_ACTION), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_INVOKE_ACTION))
 
     tag = self:CanonizeTag(tag)
     if not tag then
@@ -223,8 +294,7 @@ function ParaselenePoltergeist:InvokeActionCommand(tag)
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTION_INVOKED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_ACTION_INVOKED))
     return self:CommandComplete(true)
 end
 
@@ -241,12 +311,13 @@ function ParaselenePoltergeist:InvokeCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:ListCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:ListActionsCommand()
     self.logger:Info('ListActionsCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LIST_ACTIONS), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_LIST_ACTIONS))
 
     local houseId = self.House.GetHouseId()
     if not houseId then
@@ -254,24 +325,23 @@ function ParaselenePoltergeist:ListActionsCommand()
     end
 
     if self.HouseStorage:GetActionCount(houseId) == 0 then
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_NO_ACTIONS), 0, 1, 1)
+        self:PrintContent(GetString(PARASELENE_POLTERGEIST_NO_ACTIONS))
     else
         self.HouseStorage:IterateActions(
             houseId,
             function(tag, action)
-                self.messageWindow:AddText(tag .. ' - ' .. action:GetType() .. ' - ' .. action:GetLabel(), 0, 1, 1)
+                self:PrintContent(tag .. ' - ' .. action:GetType() .. ' - ' .. action:GetLabel())
             end
         )
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTIONS_LISTED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_ACTIONS_LISTED))
     return self:CommandComplete(true)
 end
 
 function ParaselenePoltergeist:ListPlacementsCommand()
     self.logger:Info('ListPlacementsCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LIST_PLACEMENTS), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_LIST_PLACEMENTS))
 
     local houseId = self.House.GetHouseId()
     if not houseId then
@@ -279,18 +349,17 @@ function ParaselenePoltergeist:ListPlacementsCommand()
     end
 
     if self.HouseStorage:GetPlacementCount(houseId) == 0 then
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_NO_PLACEMENTS), 0, 1, 1)
+        self:PrintContent(GetString(PARASELENE_POLTERGEIST_NO_PLACEMENTS))
     else
         self.HouseStorage:IteratePlacements(
             houseId,
             function(tag, placement)
-                self.messageWindow:AddText(tag .. ' - ' .. placement.label, 0, 1, 1)
+                self:PrintContent(tag .. ' - ' .. placement:GetLabel())
             end
         )
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENTS_LISTED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENTS_LISTED))
     return self:CommandComplete(true)
 end
 
@@ -312,12 +381,13 @@ function ParaselenePoltergeist:ListCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:LoadCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:LoadActionCommand(tag)
     self.logger:Info('LoadActionCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LOAD_ACTION), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_LOAD_ACTION))
 
     tag = self:CanonizeTag(tag)
     if not tag then
@@ -333,14 +403,13 @@ function ParaselenePoltergeist:LoadActionCommand(tag)
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTION_LOADED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_ACTION_LOADED))
     return self:CommandComplete(true)
 end
 
 function ParaselenePoltergeist:LoadPlacementCommand(tag)
     self.logger:Info('LoadPlacementCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_LOAD_PLACEMENT), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_LOAD_PLACEMENT))
 
     tag = self:CanonizeTag(tag)
     if not tag then
@@ -356,8 +425,7 @@ function ParaselenePoltergeist:LoadPlacementCommand(tag)
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_LOADED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_LOADED))
     return self:CommandComplete(true)
 end
 
@@ -379,24 +447,13 @@ function ParaselenePoltergeist:LoadCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:SaveCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE_USAGE), 0, 1, 0)
-end
-
-function ParaselenePoltergeist:CanonizeLabel(label)
-    if (type(label) == 'number') or (type(label) == 'boolean') then
-        label = tostring(label)
-    end
-    if (type(label) ~= 'string') or (#label < 1) or (#label > 100) then
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_INVALID_LABEL), 1, 0, 0)
-        return nil
-    end
-
-    return label
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:SaveActionCommand(label)
     self.logger:Info('SaveActionCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_SAVE_ACTION), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_SAVE_ACTION))
 
     if label ~= nil then
         label = self:CanonizeLabel(label)
@@ -414,14 +471,13 @@ function ParaselenePoltergeist:SaveActionCommand(label)
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_ACTION_SAVED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_ACTION_SAVED))
     return self:CommandComplete(true)
 end
 
 function ParaselenePoltergeist:SavePlacementCommand(label)
     self.logger:Info('SavePlacementCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_SAVE_PLACEMENT), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_SAVE_PLACEMENT))
 
     if label ~= nil then
         label = self:CanonizeLabel(label)
@@ -439,8 +495,7 @@ function ParaselenePoltergeist:SavePlacementCommand(label)
         return self:CommandComplete(false)
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_SAVED), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_PLACEMENT_SAVED))
     return self:CommandComplete(true)
 end
 
@@ -462,19 +517,20 @@ function ParaselenePoltergeist:SaveCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:ShowCommand()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW_USAGE), 0, 1, 0)
+    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW_USAGE))
+    return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:ShowClipboardMoveActionData(action)
     local type = action:GetType()
     local placementTag = action:GetPlacementTag()
     local message = type .. ' - ' .. GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. placementTag
-    self.messageWindow:AddText(message, 0, 1, 1)
+    self:PrintContent(message)
 end
 
 function ParaselenePoltergeist:ShowClipboardAction(tag, action)
     local taggedLabel = tag .. ' - ' .. action:GetLabel()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACTION_TAG) .. taggedLabel, 0, 1, 1)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_ACTION_TAG) .. taggedLabel)
 
     if action:GetType() == ParaselenePoltergeist.Action.MOVE then
         self:ShowClipboardMoveActionData(action)
@@ -483,28 +539,28 @@ end
 
 function ParaselenePoltergeist:ShowClipboardPlacement(tag, placement)
     local taggedLabel = tag .. ' - ' .. placement:GetLabel()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedLabel, 0, 1, 1)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. taggedLabel)
 
     local furnitureId = placement:GetFurnitureId()
     local furniture = self.FurnishingStorage:GetFurniture(furnitureId)
 
     local taggedLink = furniture:GetTag() .. ' - ' .. furniture:GetLink()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_FURNITURE_TAG) .. taggedLink, 0, 1, 1)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_FURNITURE_TAG) .. taggedLink)
 
     local x, y, z = placement:GetPosition()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_X) .. x, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Y) .. y, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_Z) .. z, 0, 1, 1)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_X) .. x)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_Y) .. y)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_Z) .. z)
 
     local pitch, roll, yaw = placement:GetOrientation()
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_PITCH) .. pitch, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ROLL) .. roll, 0, 1, 1)
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_YAW) .. yaw, 0, 1, 1)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_PITCH) .. pitch)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_ROLL) .. roll)
+    self:PrintContent(GetString(PARASELENE_POLTERGEIST_YAW) .. yaw)
 end
 
 function ParaselenePoltergeist:ShowClipboardCommand()
     self.logger:Info('ShowClipboardCommand() called.')
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_ACK_SHOW_CLIPBOARD), 1, 1, 1)
+    self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_SHOW_CLIPBOARD))
 
     local houseId = self.House.GetHouseId()
     if not houseId then
@@ -512,7 +568,7 @@ function ParaselenePoltergeist:ShowClipboardCommand()
     end
 
     if self.HouseStorage:IsClipboardEmpty(houseId) then
-        self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 0, 1, 1)
+        self:PrintContent(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY))
     else
         local clipboard = self.HouseStorage:GetClipboard(houseId)
         local content = clipboard:GetContent()
@@ -524,8 +580,7 @@ function ParaselenePoltergeist:ShowClipboardCommand()
         end
     end
 
-    self.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_SHOWN), 0, 1, 0)
-
+    self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_CLIPBOARD_SHOWN))
     return self:CommandComplete(true)
 end
 

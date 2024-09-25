@@ -43,7 +43,7 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId)
                         'y = [' .. (y or 'nil') .. '], ' ..
                         'z = [' .. (z or 'nil') .. '].'
         ParaselenePoltergeist.logger:Warn(message)
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
         return nil
     end
     ParaselenePoltergeist.logger:Info('x, y, z = [' .. x .. '], [' .. y .. '], [' .. z .. '].')
@@ -55,7 +55,7 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId)
                         'yaw = [' .. (yaw or 'nil') .. '], ' ..
                         'roll = [' .. (roll or 'nil') .. '].'
         ParaselenePoltergeist.logger:Warn(message)
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
         return nil
     end
     ParaselenePoltergeist.logger:Info('pitch, yaw, roll = [' .. pitch .. '], [' .. yaw .. '], [' .. roll .. '].')

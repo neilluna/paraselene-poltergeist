@@ -39,7 +39,7 @@ function ParaselenePoltergeist.House.GetHouseId()
     local houseId = GetCurrentZoneHouseId()
     if (not houseId) or (houseId <= 0) then
         ParaselenePoltergeist.logger:Warn('Invalid houseId. houseId = [' .. (houseId or 'nil') .. '].')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE))
         return nil
     end
     ParaselenePoltergeist.logger:Info('houseId = [' .. houseId  .. '].')
@@ -49,7 +49,7 @@ function ParaselenePoltergeist.House.GetHouseId()
         ParaselenePoltergeist.logger:Info('The player is the owner of current house.')
     else
         ParaselenePoltergeist.logger:Info('The player is not the owner of current house.')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_OWN_HOUSE))
         return nil
     end
 
@@ -78,7 +78,7 @@ end
 function ParaselenePoltergeist.House:GetClipboard()
     if not self.clipboard then
         ParaselenePoltergeist.logger:Info('The clipboard does not exist in this house.')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY))
         return nil
     end
 
@@ -88,7 +88,7 @@ end
 function ParaselenePoltergeist.House:ClearClipboard()
     if not self.clipboard then
         ParaselenePoltergeist.logger:Info('The clipboard does not exist in this house.')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY))
         return false
     end
 
@@ -115,16 +115,13 @@ end
 function ParaselenePoltergeist.House:SaveAction(label)
     if not self.clipboard then
         ParaselenePoltergeist.logger:Info('The clipboard does not exist in this house.')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY))
         return false
     end
 
     if self.clipboard:GetType() ~= self.clipboard.ACTION then
         ParaselenePoltergeist.logger:Info('The clipboard does not contain an action.')
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_NOT_AN_ACTION),
-            1, 0, 0
-        )
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_NOT_AN_ACTION))
         return false
     end
 
@@ -173,16 +170,13 @@ end
 function ParaselenePoltergeist.House:SavePlacement(label)
     if not self.clipboard then
         ParaselenePoltergeist.logger:Info('The clipboard does not exist in this house.')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY))
         return false
     end
 
     if self.clipboard:GetType() ~= self.clipboard.PLACEMENT then
         ParaselenePoltergeist.logger:Info('The clipboard does not contain a placement.')
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_NOT_A_PLACEMENT),
-            1, 0, 0
-        )
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_NOT_A_PLACEMENT))
         return false
     end
 

@@ -42,7 +42,7 @@ function ParaselenePoltergeist.PlacementStorage:GetPlacement(tag)
     if not self.storage[tag] then
         ParaselenePoltergeist.logger:Info('Placement %d does not exist in the placement storage.', tag)
         local message = string.format(GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST), tag)
-        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        ParaselenePoltergeist:PrintError(message)
         return nil
     end
 
@@ -83,7 +83,7 @@ function ParaselenePoltergeist.PlacementStorage:DeletePlacement(tag)
     if not self.storage[tag] then
         ParaselenePoltergeist.logger:Info('Placement %d does not exist in the placement storage.', tag)
         local message = string.format(GetString(PARASELENE_POLTERGEIST_PLACEMENT_DOES_NOT_EXIST), tag)
-        ParaselenePoltergeist.messageWindow:AddText(message, 1, 0, 0)
+        ParaselenePoltergeist:PrintError(message)
         return false
     end
 

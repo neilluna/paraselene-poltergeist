@@ -51,10 +51,7 @@ function ParaselenePoltergeist.Furnishing.GetEditorMode()
     )
 
     if editorMode ~= HOUSING_EDITOR_MODE_SELECTION then
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_SELECTION_MODE),
-            1, 0, 0
-        )
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_SELECTION_MODE))
         return nil
     end
 
@@ -62,7 +59,7 @@ function ParaselenePoltergeist.Furnishing.GetEditorMode()
         ParaselenePoltergeist.logger:Info('The player can select targetted furniture.')
     else
         ParaselenePoltergeist.logger:Info('The player cannot select targetted furniture.')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE))
         return nil
     end
 
@@ -124,10 +121,7 @@ function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
 
     if not furnitureId64 then
         ParaselenePoltergeist.logger:Warn('Unable to get the furniture ID.')
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
-            1, 0, 0
-        )
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
         return nil, nil
     end
 
@@ -136,19 +130,13 @@ function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
 
     local link = ParaselenePoltergeist.Furnishing.GetLinkFromFurnitureId(furnitureId64)
     if not link then
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
-            1, 0, 0
-        )
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
         return nil, nil
     end
 
     local itemId = ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
     if not itemId then
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
-            1, 0, 0
-        )
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
         return nil, nil
     end
 
