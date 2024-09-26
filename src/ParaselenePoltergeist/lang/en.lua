@@ -5,68 +5,44 @@ ParaselenePoltergeist.localizationStrings = {
     -- Key binding action label.
     CAPTURE_PLACEMENT = 'Capture Furniture Placement',
 
+    -- Usage phrases.
+    SLASH_COMMAND_ADDITIONAL_PARAMETER_NEEDED = 'An additional parameter is needed.\n',
+    SLASH_COMMAND_ADDITIONAL_PARAMETERS_NEEDED = 'Additional parameters are needed.\n',
+    SLASH_COMMAND_ADD_WORD = 'Please add the following word:\n',
+    SLASH_COMMAND_ADD_WORDS = 'Please add one of the following words:\n',
+
     -- Slash command.
     SLASH_COMMAND = '/ppg',
     SLASH_COMMAND_DESCRIPTION = "Paraselene's Poltergeist",
-    SLASH_COMMAND_USAGE = 'Additional parameters are needed. ' ..
-        'Please add one of the following words: ' ..
-        '"delete", "hide", "invoke", "list", "load", "save", or "show".',
 
     -- Slash command verbs.
     COMMAND_CREATE = 'create',
     COMMAND_CREATE_DESCRIPTION = '"create" subcommands',
-    COMMAND_CREATE_USAGE = 'An additional parameter is needed. ' ..
-        'Please add the following word: ' ..
-        '"action".',
 
     COMMAND_DELETE = 'delete',
     COMMAND_DELETE_DESCRIPTION = '"delete" subcommands',
-    COMMAND_DELETE_USAGE = 'Additional parameters are needed. ' ..
-        'Please add one of the following words: ' ..
-        '"action", "clipboard", or "placement".',
 
     COMMAND_HIDE = 'hide',
     COMMAND_HIDE_DESCRIPTION = '"hide" subcommands',
-    COMMAND_HIDE_USAGE = 'An additional parameter is needed. ' ..
-        'Please add the following word: ' ..
-        '"window".',
 
     COMMAND_INVOKE = 'invoke',
     COMMAND_INVOKE_DESCRIPTION = '"invoke" subcommands',
-    COMMAND_INVOKE_USAGE = 'An additional parameter is needed. ' ..
-        'Please add the following word: ' ..
-        '"action".',
 
     COMMAND_LIST = 'list',
     COMMAND_LIST_DESCRIPTION = '"list" subcommands',
-    COMMAND_LIST_USAGE = 'Additional parameters are needed. ' ..
-        'Please add one of the following words: ' ..
-        '"actions" or "placements".',
 
     COMMAND_LOAD = 'load',
     COMMAND_LOAD_DESCRIPTION = '"load" subcommands',
-    COMMAND_LOAD_USAGE = 'Additional parameters are needed. ' ..
-        'Please add one of the following words: ' ..
-        '"action" or "placement".',
 
     COMMAND_SAVE = 'save',
     COMMAND_SAVE_DESCRIPTION = '"save" subcommands',
-    COMMAND_SAVE_USAGE = 'Additional parameters are needed. ' ..
-        'Please add one of the following words: ' ..
-        '"action" or "placement".',
 
     COMMAND_SHOW = 'show',
     COMMAND_SHOW_DESCRIPTION = '"show" subcommands',
-    COMMAND_SHOW_USAGE = 'Additional parameters are needed. ' ..
-        'Please add one of the following words: ' ..
-        '"clipboard" or "window".',
 
     -- Slash command targets.
     COMMAND_ACTION = 'action',
     COMMAND_CREATE_ACTION_DESCRIPTION = 'Create an action',
-    COMMAND_CREATE_ACTION_USAGE = 'Additional parameters are needed. ' ..
-        'Please add the following word: ' ..
-        '"move".',
 
     COMMAND_DELETE_ACTION_DESCRIPTION = 'Delete an action',
     COMMAND_DELETE_ACTION_USAGE = 'Specify the tag of the action.',

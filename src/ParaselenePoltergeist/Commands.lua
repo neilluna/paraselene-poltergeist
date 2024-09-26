@@ -52,9 +52,24 @@ function ParaselenePoltergeist:PrintError(text)
     self:PrintRed(text)
 end
 
-function ParaselenePoltergeist:PrintUsage(text)
-    self.logger:Info('UI Message: ' .. text)
-    self:PrintYellow(text)
+function ParaselenePoltergeist:PrintUsage(wordList)
+    local message = nil
+    if #wordList == 1 then
+        message = GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_ADDITIONAL_PARAMETER_NEEDED) ..
+                  GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_ADD_WORD)
+    else
+        message = GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_ADDITIONAL_PARAMETERS_NEEDED) ..
+                  GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_ADD_WORDS)
+    end
+    for index, word in pairs(wordList) do
+        message = message .. word
+        if index < #wordList then
+            message = message .. '\n'
+        end
+    end
+
+    self.logger:Info('UI Message: ' .. message)
+    self:PrintYellow(message)
 end
 
 function ParaselenePoltergeist:CommandComplete(result)
@@ -69,6 +84,7 @@ function ParaselenePoltergeist:CanonizeTag(tag)
     end
 
     if (type(tag) ~= 'number') or (tag % 1 ~= 0) or (tag < 1) or (tag > 999999) then
+        self.logger:Info('tag = ' .. tag)
         self:PrintError(GetString(PARASELENE_POLTERGEIST_INVALID_TAG))
         return nil
     end
@@ -81,6 +97,7 @@ function ParaselenePoltergeist:CanonizeLabel(label)
         label = tostring(label)
     end
     if (type(label) ~= 'string') or (#label < 1) or (#label > 100) then
+        self.logger:Info('label = ' .. label)
         self:PrintError(GetString(PARASELENE_POLTERGEIST_INVALID_LABEL))
         return nil
     end
@@ -116,17 +133,30 @@ function ParaselenePoltergeist:CaptureCommand()
 end
 
 function ParaselenePoltergeist:ParentCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_SLASH_COMMAND_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_LIST),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW),
+    }
     return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:CreateCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION),
+    }
     return self:CommandComplete(false)
 end
 
 function ParaselenePoltergeist:CreateActionCommand(tag)
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_ACTION_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_MOVE_ACTION),
+    }
     return self:CommandComplete(false)
 end
 
@@ -158,7 +188,11 @@ function ParaselenePoltergeist:CreateCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:DeleteCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_DELETE_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_CLIPBOARD),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENT),
+    }
     return self:CommandComplete(false)
 end
 
@@ -246,7 +280,9 @@ function ParaselenePoltergeist:DeleteCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:HideCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_HIDE_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_WINDOW),
+    }
     return self:CommandComplete(false)
 end
 
@@ -272,7 +308,9 @@ function ParaselenePoltergeist:HideCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:InvokeCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_INVOKE_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION),
+    }
     return self:CommandComplete(false)
 end
 
@@ -311,7 +349,10 @@ function ParaselenePoltergeist:InvokeCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:ListCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_LIST_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_ACTIONS),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENTS),
+    }
     return self:CommandComplete(false)
 end
 
@@ -381,7 +422,10 @@ function ParaselenePoltergeist:ListCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:LoadCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_LOAD_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENT),
+    }
     return self:CommandComplete(false)
 end
 
@@ -447,7 +491,10 @@ function ParaselenePoltergeist:LoadCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:SaveCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_SAVE_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_ACTION),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_PLACEMENT),
+    }
     return self:CommandComplete(false)
 end
 
@@ -517,7 +564,10 @@ function ParaselenePoltergeist:SaveCommands(parentCommand)
 end
 
 function ParaselenePoltergeist:ShowCommand()
-    self:PrintUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_SHOW_USAGE))
+    self:PrintUsage{
+        GetString(PARASELENE_POLTERGEIST_COMMAND_CLIPBOARD),
+        GetString(PARASELENE_POLTERGEIST_COMMAND_WINDOW),
+    }
     return self:CommandComplete(false)
 end
 
