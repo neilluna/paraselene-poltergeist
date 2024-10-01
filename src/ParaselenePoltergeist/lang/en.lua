@@ -6,10 +6,10 @@ ParaselenePoltergeist.localizationStrings = {
     CAPTURE_PLACEMENT = 'Capture Furniture Placement',
 
     -- Usage phrases.
-    SLASH_COMMAND_ADDITIONAL_PARAMETER_NEEDED = 'An additional parameter is needed.\n',
+    SLASH_COMMAND_ADDITIONAL_KEYWORD_NEEDED = 'An additional keyword is needed.\n',
+    SLASH_COMMAND_ADD_KEYWORD = 'Please add the following keyword:\n',
+    SLASH_COMMAND_ADD_ONE_OF_KEYWORDS = 'Please add one of the following keywords:\n',
     SLASH_COMMAND_ADDITIONAL_PARAMETERS_NEEDED = 'Additional parameters are needed.\n',
-    SLASH_COMMAND_ADD_WORD = 'Please add the following word:\n',
-    SLASH_COMMAND_ADD_WORDS = 'Please add one of the following words:\n',
 
     -- Slash command.
     SLASH_COMMAND = '/ppg',
@@ -45,16 +45,15 @@ ParaselenePoltergeist.localizationStrings = {
     COMMAND_CREATE_ACTION_DESCRIPTION = 'Create an action',
 
     COMMAND_DELETE_ACTION_DESCRIPTION = 'Delete an action',
-    COMMAND_DELETE_ACTION_USAGE = 'Specify the tag of the action.',
+    COMMAND_DELETE_ACTION_USAGE = 'Please provide the tag of the action to delete.',
 
     COMMAND_INVOKE_ACTION_DESCRIPTION = 'Invoke an action',
-    COMMAND_INVOKE_ACTION_USAGE = 'Specify the tag of the action.',
+    COMMAND_INVOKE_ACTION_USAGE = 'Please provide the tag of the action to invoke.',
 
     COMMAND_LOAD_ACTION_DESCRIPTION = 'Load an action',
-    COMMAND_LOAD_ACTION_USAGE = 'Specify the tag of the action.',
+    COMMAND_LOAD_ACTION_USAGE = 'Please provide the tag of the action to load.',
 
     COMMAND_SAVE_ACTION_DESCRIPTION = 'Save an action',
-    COMMAND_SAVE_ACTION_USAGE = 'Specify the label of the action.',
 
     COMMAND_ACTIONS = 'actions',
     COMMAND_LIST_ACTIONS_DESCRIPTION = 'List all actions',
@@ -65,13 +64,12 @@ ParaselenePoltergeist.localizationStrings = {
 
     COMMAND_PLACEMENT = 'placement',
     COMMAND_DELETE_PLACEMENT_DESCRIPTION = 'Delete a placement',
-    COMMAND_DELETE_PLACEMENT_USAGE = 'Specify the tag of the placement.',
+    COMMAND_DELETE_PLACEMENT_USAGE = 'Please provide the tag of the placement to delete.',
 
     COMMAND_LOAD_PLACEMENT_DESCRIPTION = 'Load a placement',
-    COMMAND_LOAD_PLACEMENT_USAGE = 'Specify the tag of the placement.',
+    COMMAND_LOAD_PLACEMENT_USAGE = 'Please provide the tag of the placement to load.',
 
     COMMAND_SAVE_PLACEMENT_DESCRIPTION = 'Save a placement',
-    COMMAND_SAVE_PLACEMENT_USAGE = 'Specify the label of the placement.',
 
     COMMAND_PLACEMENTS = 'placements',
     COMMAND_LIST_PLACEMENTS_DESCRIPTION = 'List all placements',
@@ -126,15 +124,15 @@ ParaselenePoltergeist.localizationStrings = {
     MUST_BE_IN_SELECTION_MODE = 'You must be in selection mode to capture the furniture placement.',
     MUST_TARGET_FURNITURE = 'You must target the furniture before capturing its placement.',
     UNABLE_TO_CAPTURE_FURNITURE = 'Unable to capture the furniture placement.',
-    ACTION_DOES_NOT_EXIST = 'Action #%d does not exist in this house.',
-    PLACEMENT_DOES_NOT_EXIST = 'Placement #%d does not exist in this house.',
+    ACTION_DOES_NOT_EXIST = 'The action with tag %d does not exist in this house.',
+    PLACEMENT_DOES_NOT_EXIST = 'The placement with tag %d does not exist in this house.',
     NO_ACTIONS = 'There are no actions in this house.',
     NO_PLACEMENTS = 'There are no placements in this house.',
 
     -- Tag phrases.
-    ACTION_TAG = 'Action #',
-    FURNITURE_TAG = 'Furniture #',
-    PLACEMENT_TAG = 'Placement #',
+    ACTION_TAG = 'Action tag',
+    FURNITURE_TAG = 'Furniture tag',
+    PLACEMENT_TAG = 'Placement tag',
 
     -- New item labels.
     NEW_ACTION = 'New action',
