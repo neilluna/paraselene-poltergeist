@@ -1,3 +1,5 @@
+ParaselenePoltergeist.MoveAction = {}
+
 function ParaselenePoltergeist.MoveAction:Create(initData)
     local newInstance = {}
     setmetatable(newInstance, self)
@@ -20,6 +22,7 @@ end
 
 function ParaselenePoltergeist.MoveAction:Invoke()
     ParaselenePoltergeist.logger:Info('TODO: Invoke action [%s], [%s], [%d].', self.type, self.label, self.placementTag)
+    return true
 end
 
 function ParaselenePoltergeist.MoveAction:GetLabel()

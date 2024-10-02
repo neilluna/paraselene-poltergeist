@@ -43,6 +43,7 @@ ParaselenePoltergeist.localizationStrings = {
     -- Slash command targets.
     COMMAND_ACTION = 'action',
     COMMAND_CREATE_ACTION_DESCRIPTION = 'Create an action',
+    COMMAND_CREATE_MOVE_ACTION_USAGE = 'Please provide the tag of the placement to move.',
 
     COMMAND_DELETE_ACTION_DESCRIPTION = 'Delete an action',
     COMMAND_DELETE_ACTION_USAGE = 'Please provide the tag of the action to delete.',

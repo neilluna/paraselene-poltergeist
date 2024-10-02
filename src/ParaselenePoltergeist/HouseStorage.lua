@@ -29,6 +29,15 @@ function ParaselenePoltergeist.HouseStorage:Capture(houseId, furnitureId)
     return self.storage[houseId]:Capture(furnitureId)
 end
 
+function ParaselenePoltergeist.HouseStorage:CreateMoveAction(houseId, placementTag)
+    if not self.storage[houseId] then
+        ParaselenePoltergeist.logger:Info('Creating house %d in the house storage.', houseId)
+        self.storage[houseId] = ParaselenePoltergeist.House.Init()
+    end
+
+    return self.storage[houseId]:CreateMoveAction(placementTag)
+end
+
 function ParaselenePoltergeist.HouseStorage:IsClipboardEmpty(houseId)
 
     if not self.storage[houseId] then
@@ -56,7 +65,7 @@ function ParaselenePoltergeist.HouseStorage:DeleteClipboard(houseId)
         return false
     end
 
-    return self.storage[houseId]:ClearClipboard()
+    return self.storage[houseId]:DeleteClipboard()
 end
 
 function ParaselenePoltergeist.HouseStorage:LoadAction(houseId, tag)

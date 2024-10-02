@@ -71,6 +71,22 @@ function ParaselenePoltergeist.House:Capture(furnitureId)
     return true
 end
 
+function ParaselenePoltergeist.House:CreateMoveAction(placementTag)
+    local placement = self.placements:GetPlacement(placementTag)
+    if not placement then
+        return false
+    end
+
+    local action, tag = self.actions:CreateMoveAction(placementTag)
+    self.clipboard = ParaselenePoltergeist.Clipboard:Create{
+        type = ParaselenePoltergeist.Clipboard.ACTION,
+        content = action,
+        tag = tag,
+    }
+
+    return true
+end
+
 function ParaselenePoltergeist.House:IsClipboardEmpty()
     return self.clipboard == nil
 end
@@ -85,7 +101,7 @@ function ParaselenePoltergeist.House:GetClipboard()
     return self.clipboard
 end
 
-function ParaselenePoltergeist.House:ClearClipboard()
+function ParaselenePoltergeist.House:DeleteClipboard()
     if not self.clipboard then
         ParaselenePoltergeist.logger:Info('The clipboard does not exist in this house.')
         ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_CLIPBOARD_IS_EMPTY))

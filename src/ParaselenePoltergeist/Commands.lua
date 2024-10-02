@@ -194,7 +194,24 @@ function ParaselenePoltergeist:CreateMoveActionCommand(tag)
     self.logger:Info('CreateMoveActionCommand() called.')
     self:PrintCommandStart(GetString(PARASELENE_POLTERGEIST_ACK_CREATE_MOVE_ACTION))
 
-    -- TODO: Implement this command.
+    if (not tag) or (tag == '')  then
+        self:PrintTagUsage(GetString(PARASELENE_POLTERGEIST_COMMAND_CREATE_MOVE_ACTION_USAGE))
+        return self:CommandComplete(false)
+    end
+
+    tag = self:CanonizeTag(tag)
+    if not tag then
+        return self:CommandComplete(false)
+    end
+
+    local houseId = self.House.GetHouseId()
+    if not houseId then
+        return self:CommandComplete(false)
+    end
+
+    if not self.HouseStorage:CreateMoveAction(houseId, tag) then
+        return self:CommandComplete(false)
+    end
 
     self:PrintCommandEnd(GetString(PARASELENE_POLTERGEIST_RES_MOVE_ACTION_CREATED))
     return self:CommandComplete(true)

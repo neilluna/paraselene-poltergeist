@@ -34,6 +34,10 @@ function ParaselenePoltergeist.ActionStorage:Save()
     }
 end
 
+function ParaselenePoltergeist.ActionStorage:CreateMoveAction(placementTag)
+    return ParaselenePoltergeist.Action:CreateMoveAction(placementTag), self.nextAvailableTag
+end
+
 function ParaselenePoltergeist.ActionStorage:GetAction(tag)
     if not self.storage[tag] then
         ParaselenePoltergeist.logger:Info('Action %d does not exist in the action storage.', tag)

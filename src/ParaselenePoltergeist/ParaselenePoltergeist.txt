@@ -11,6 +11,7 @@ lang/en.lua
 lang/$(language).lua
 Strings.lua
 
+MoveAction.lua
 Action.lua
 ActionStorage.lua
 Furnishing.lua

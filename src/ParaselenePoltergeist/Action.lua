@@ -8,3 +8,11 @@ function ParaselenePoltergeist.Action:Create(initData)
         return ParaselenePoltergeist.MoveAction:Create(initData)
     end
 end
+
+function ParaselenePoltergeist.Action:CreateMoveAction(placementTag)
+    return ParaselenePoltergeist.MoveAction:Create{
+        type = self.MOVE,
+        label = GetString(PARASELENE_POLTERGEIST_NEW_ACTION),
+        placementTag = placementTag,
+    }
+end
