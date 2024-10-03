@@ -50,6 +50,29 @@ function ParaselenePoltergeist.Furnishing.GetEditorMode()
         'editorMode = [%d] (%s).', editorMode, ParaselenePoltergeist.Furnishing.EditorModeToString(editorMode)
     )
 
+    return editorMode
+end
+
+function ParaselenePoltergeist.Furnishing.GetEditorModeForInvoke()
+    local editorMode = ParaselenePoltergeist.Furnishing.GetEditorMode()
+    if not editorMode then
+        return nil
+    end
+
+    if editorMode ~= HOUSING_EDITOR_MODE_DISABLED then
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_NOT_BE_IN_EDITOR_MODE))
+        return nil
+    end
+
+    return editorMode
+end
+
+function ParaselenePoltergeist.Furnishing.GetEditorModeForCapture()
+    local editorMode = ParaselenePoltergeist.Furnishing.GetEditorMode()
+    if not editorMode then
+        return nil
+    end
+
     if editorMode ~= HOUSING_EDITOR_MODE_SELECTION then
         ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_SELECTION_MODE))
         return nil

@@ -136,7 +136,7 @@ function ParaselenePoltergeist:CaptureCommand()
         return self:CommandComplete(false)
     end
 
-    local editorMode = self.Furnishing.GetEditorMode()
+    local editorMode = self.Furnishing.GetEditorModeForCapture()
     if not editorMode then
         return self:CommandComplete(false)
     end
@@ -396,6 +396,10 @@ function ParaselenePoltergeist:InvokeActionCommand(tag)
 
     local houseId = self.House.GetHouseId()
     if not houseId then
+        return self:CommandComplete(false)
+    end
+
+    if not self.Furnishing.GetEditorModeForInvoke() then
         return self:CommandComplete(false)
     end
 

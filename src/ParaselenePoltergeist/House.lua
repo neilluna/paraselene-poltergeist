@@ -161,7 +161,22 @@ function ParaselenePoltergeist.House:IterateActions(actionFunction)
 end
 
 function ParaselenePoltergeist.House:InvokeAction(tag)
-    return self.actions:InvokeAction(tag)
+    ParaselenePoltergeist.logger:Info('tag = [' .. tag .. '].')
+
+    local action = self.actions:GetAction(tag)
+    if not action then
+        return false
+    end
+
+    local placementTag = action:GetPlacementTag()
+    ParaselenePoltergeist.logger:Info('placementTag = [' .. placementTag .. '].')
+
+    local placement = self.placements:GetPlacement(placementTag)
+    if not placement then
+        return false
+    end
+
+    return self.actions:InvokeAction(tag, placement)
 end
 
 function ParaselenePoltergeist.House:DeleteAction(tag)

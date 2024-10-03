@@ -20,8 +20,27 @@ function ParaselenePoltergeist.MoveAction:Save()
     }
 end
 
-function ParaselenePoltergeist.MoveAction:Invoke()
-    ParaselenePoltergeist.logger:Info('TODO: Invoke action [%s], [%s], [%d].', self.type, self.label, self.placementTag)
+function ParaselenePoltergeist.MoveAction:Invoke(placement)
+    local furnitureId = placement:GetFurnitureId()
+    ParaselenePoltergeist.logger:Info('furnitureId = [' .. furnitureId .. '].')
+
+    local furnitureId64 = StringToId64(furnitureId)
+    local x, y, z = placement:GetPosition()
+    local pitch, yaw, roll = placement:GetOrientation()
+
+    local result = HousingEditorRequestChangePositionAndOrientation(furnitureId64, x, y, z, pitch, yaw, roll)
+    if result ~= HOUSING_REQUEST_RESULT_SUCCESS then
+        ParaselenePoltergeist.logger:Warn('Unable to move the furniture. result = [' .. (result or 'nil') .. '].')
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_MOVE_FURNITURE))
+        return false
+    end
+
+    local message = 'Moved furniture to x = [' .. x .. '], y = [' .. y .. '], z = [' .. z .. '].'
+    ParaselenePoltergeist.logger:Info(message)
+
+    message = 'Rotated furniture to pitch = [' .. pitch .. '], yaw = [' .. yaw .. '], roll = [' .. roll .. '].'
+    ParaselenePoltergeist.logger:Info(message)
+
     return true
 end
 
