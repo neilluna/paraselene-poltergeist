@@ -20,35 +20,6 @@ function ParaselenePoltergeist.Furnishing:Save()
     }
 end
 
-function ParaselenePoltergeist.Furnishing.GetEditorMode()
-    local editorMode = GetHousingEditorMode()
-    if type(editorMode) ~= 'number' then
-        ParaselenePoltergeist.logger:Warn('Unable to get the editor mode.')
-        return nil
-    end
-    ParaselenePoltergeist.logger:Info(
-        'editorMode = [%d] (%s).', editorMode, ParaselenePoltergeist.Furnishing.EditorModeToString(editorMode)
-    )
-
-    if editorMode ~= HOUSING_EDITOR_MODE_SELECTION then
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_SELECTION_MODE),
-            1, 0, 0
-        )
-        return nil
-    end
-
-    if HousingEditorCanSelectTargettedFurniture() then
-        ParaselenePoltergeist.logger:Info('The player can select targetted furniture.')
-    else
-        ParaselenePoltergeist.logger:Info('The player cannot select targetted furniture.')
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE), 1, 0, 0)
-        return nil
-    end
-
-    return editorMode
-end
-
 function ParaselenePoltergeist.Furnishing.EditorModeToString(editorMode)
     if editorMode == HOUSING_EDITOR_MODE_BROWSE then
         return 'HOUSING_EDITOR_MODE_BROWSE'
@@ -69,50 +40,53 @@ function ParaselenePoltergeist.Furnishing.EditorModeToString(editorMode)
     return 'Unknown'
 end
 
-function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
-    local furnitureId64 = nil
+function ParaselenePoltergeist.Furnishing.GetEditorMode()
+    local editorMode = GetHousingEditorMode()
+    if type(editorMode) ~= 'number' then
+        ParaselenePoltergeist.logger:Warn('Unable to get the editor mode.')
+        return nil
+    end
+    ParaselenePoltergeist.logger:Info(
+        'editorMode = [%d] (%s).', editorMode, ParaselenePoltergeist.Furnishing.EditorModeToString(editorMode)
+    )
 
-    LockCameraRotation(true)
-    HousingEditorSelectTargettedFurniture()
-    furnitureId64 = HousingEditorGetSelectedFurnitureId()
-    HousingEditorRequestModeChange(editorMode)
-    LockCameraRotation(false)
+    return editorMode
+end
 
-    if not furnitureId64 then
-        ParaselenePoltergeist.logger:Warn('Unable to get the furniture ID.')
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
-            1, 0, 0
-        )
-        return nil, nil
+function ParaselenePoltergeist.Furnishing.GetEditorModeForInvoke()
+    local editorMode = ParaselenePoltergeist.Furnishing.GetEditorMode()
+    if not editorMode then
+        return nil
     end
 
-    local furnitureId = Id64ToString(furnitureId64)
-    ParaselenePoltergeist.logger:Info('furnitureId = [' .. furnitureId .. '].')
-
-    local link = ParaselenePoltergeist.Furnishing.GetLinkFromFurnitureId(furnitureId64)
-    if not link then
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
-            1, 0, 0
-        )
-        return nil, nil
+    if editorMode ~= HOUSING_EDITOR_MODE_DISABLED then
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_NOT_BE_IN_EDITOR_MODE))
+        return nil
     end
 
-    local itemId = ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
-    if not itemId then
-        ParaselenePoltergeist.messageWindow:AddText(
-            GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE),
-            1, 0, 0
-        )
-        return nil, nil
+    return editorMode
+end
+
+function ParaselenePoltergeist.Furnishing.GetEditorModeForCapture()
+    local editorMode = ParaselenePoltergeist.Furnishing.GetEditorMode()
+    if not editorMode then
+        return nil
     end
 
-    return furnitureId, ParaselenePoltergeist.Furnishing:Create{
-        tag = tag,
-        itemId = itemId,
-        link = link,
-    }
+    if editorMode ~= HOUSING_EDITOR_MODE_SELECTION then
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_BE_IN_SELECTION_MODE))
+        return nil
+    end
+
+    if HousingEditorCanSelectTargettedFurniture() then
+        ParaselenePoltergeist.logger:Info('The player can select targetted furniture.')
+    else
+        ParaselenePoltergeist.logger:Info('The player cannot select targetted furniture.')
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_MUST_TARGET_FURNITURE))
+        return nil
+    end
+
+    return editorMode
 end
 
 function ParaselenePoltergeist.Furnishing.GetLinkFromFurnitureId(furnitureId64)
@@ -159,10 +133,47 @@ function ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
     return itemId
 end
 
-function ParaselenePoltergeist.Furnishing:GetLink()
-    return self.link
+function ParaselenePoltergeist.Furnishing.Capture(editorMode, tag)
+    local furnitureId64 = nil
+
+    LockCameraRotation(true)
+    HousingEditorSelectTargettedFurniture()
+    furnitureId64 = HousingEditorGetSelectedFurnitureId()
+    HousingEditorRequestModeChange(editorMode)
+    LockCameraRotation(false)
+
+    if not furnitureId64 then
+        ParaselenePoltergeist.logger:Warn('Unable to get the furniture ID.')
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
+        return nil, nil
+    end
+
+    local furnitureId = Id64ToString(furnitureId64)
+    ParaselenePoltergeist.logger:Info('furnitureId = [' .. furnitureId .. '].')
+
+    local link = ParaselenePoltergeist.Furnishing.GetLinkFromFurnitureId(furnitureId64)
+    if not link then
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
+        return nil, nil
+    end
+
+    local itemId = ParaselenePoltergeist.Furnishing.GetItemIdFromLink(link)
+    if not itemId then
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
+        return nil, nil
+    end
+
+    return furnitureId, ParaselenePoltergeist.Furnishing:Create{
+        tag = tag,
+        itemId = itemId,
+        link = link,
+    }
 end
 
 function ParaselenePoltergeist.Furnishing:GetTag()
     return self.tag
+end
+
+function ParaselenePoltergeist.Furnishing:GetLink()
+    return self.link
 end

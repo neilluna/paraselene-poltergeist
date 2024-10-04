@@ -4,6 +4,7 @@ ParaselenePoltergeist.FurnishingStorage = {
 }
 
 function ParaselenePoltergeist.FurnishingStorage:Load(initData)
+    self.storage = {}
     for furnitureId, furnishing in pairs(initData.storage) do
         self.storage[furnitureId] = ParaselenePoltergeist.Furnishing:Create(furnishing)
     end

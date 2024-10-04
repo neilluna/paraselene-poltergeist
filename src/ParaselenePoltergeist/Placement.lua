@@ -30,8 +30,8 @@ function ParaselenePoltergeist.Placement:Save()
     }
 end
 
-function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
-    local label = GetString(PARASELENE_POLTERGEIST_PLACEMENT_TAG) .. tag
+function ParaselenePoltergeist.Placement.Capture(furnitureId)
+    local label = GetString(PARASELENE_POLTERGEIST_NEW_PLACEMENT)
     ParaselenePoltergeist.logger:Info('label = ['  .. label .. '].')
 
     local furnitureId64 = StringToId64(furnitureId)
@@ -43,7 +43,7 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
                         'y = [' .. (y or 'nil') .. '], ' ..
                         'z = [' .. (z or 'nil') .. '].'
         ParaselenePoltergeist.logger:Warn(message)
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
         return nil
     end
     ParaselenePoltergeist.logger:Info('x, y, z = [' .. x .. '], [' .. y .. '], [' .. z .. '].')
@@ -55,7 +55,7 @@ function ParaselenePoltergeist.Placement.Capture(furnitureId, tag)
                         'yaw = [' .. (yaw or 'nil') .. '], ' ..
                         'roll = [' .. (roll or 'nil') .. '].'
         ParaselenePoltergeist.logger:Warn(message)
-        ParaselenePoltergeist.messageWindow:AddText(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE), 1, 0, 0)
+        ParaselenePoltergeist:PrintError(GetString(PARASELENE_POLTERGEIST_UNABLE_TO_CAPTURE_FURNITURE))
         return nil
     end
     ParaselenePoltergeist.logger:Info('pitch, yaw, roll = [' .. pitch .. '], [' .. yaw .. '], [' .. roll .. '].')
@@ -74,6 +74,10 @@ end
 
 function ParaselenePoltergeist.Placement:GetLabel()
     return self.label
+end
+
+function ParaselenePoltergeist.Placement:SetLabel(label)
+    self.label = label
 end
 
 function ParaselenePoltergeist.Placement:GetFurnitureId()
