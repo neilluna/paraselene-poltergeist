@@ -11,9 +11,6 @@ lang/en.lua
 lang/$(language).lua
 Strings.lua
 
-MoveAction.lua
-Action.lua
-ActionStorage.lua
 Furnishing.lua
 FurnishingStorage.lua
 Placement.lua
@@ -22,8 +19,13 @@ Clipboard.lua
 House.lua
 HouseStorage.lua
 
+MoveAction.lua
+Action.lua
+ActionStorage.lua
+
 SavedVariables.lua
 Settings.lua
+
 Commands.lua
 Initialize.lua
 
