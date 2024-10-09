@@ -20,7 +20,12 @@ function ParaselenePoltergeist.MoveAction:Save()
     }
 end
 
-function ParaselenePoltergeist.MoveAction:Invoke(placement)
+function ParaselenePoltergeist.MoveAction:Invoke(house)
+    local placement = house.placements:GetPlacement(self.placementTag)
+    if not placement then
+        return false
+    end
+
     local furnitureId = placement:GetFurnitureId()
     ParaselenePoltergeist.logger:Info('furnitureId = [' .. furnitureId .. '].')
 
